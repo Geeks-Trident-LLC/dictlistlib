@@ -1,10 +1,10 @@
-"""Packaging dlapp."""
+"""Packaging dlpro."""
 
 from setuptools import setup, find_packages
 
 
 setup(
-    name='dlapp',
+    name='dlpro',
     version='0.3.6',
     license='BSD-3-Clause',
     license_files=['LICENSE'],
@@ -16,7 +16,7 @@ setup(
     maintainer='Tuyen Mathew Duong',
     maintainer_email='tuyen@geekstrident.com',
     install_requires=['pyyaml', 'compare_versions', 'python-dateutil'],
-    url='https://github.com/Geeks-Trident-LLC/dlapp',
+    url='https://github.com/Geeks-Trident-LLC/dlpro',
     packages=find_packages(
         exclude=(
             'tests*', 'testing*', 'examples*',
@@ -26,9 +26,9 @@ setup(
     test_suite='tests',
     entry_points={
         'console_scripts': [
-            'dlapp = dlapp.main:execute',
-            'dlapp-gui = dlapp.application:execute',
-            'dl-app = dlapp.application:execute'
+            'dlpro = dlpro.main:execute',
+            'dlpro-gui = dlpro.application:execute',
+            'dl-pro = dlpro.application:execute'
         ]
     },
     classifiers=[

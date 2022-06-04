@@ -1,5 +1,5 @@
 
-from dlapp.main import Cli
+from dlpro.main import Cli
 
 console = Cli()
 console.run()

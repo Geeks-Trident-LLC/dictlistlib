@@ -1,4 +1,4 @@
-from dlapp.predicate import Predicate
+from dlpro.predicate import Predicate
 import pytest
 
 

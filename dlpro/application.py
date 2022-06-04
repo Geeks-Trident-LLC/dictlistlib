@@ -1,13 +1,13 @@
-"""Module containing the logic for the DLApp."""
+"""Module containing the logic for the DLPro."""
 
 import platform
 
 try:
     import tkinter as tk
 except ModuleNotFoundError as ex:
-    from dlapp.utils import Printer
+    from dlpro.utils import Printer
     import sys
-    lst = ["Failed to launch DLApp application because",
+    lst = ["Failed to launch DLPro application because",
            "Python{} binary doesn't have tkinter module".format(platform.python_version()),
            "Please install tkinter module and try it again"]
     Printer.print(lst)
@@ -24,13 +24,13 @@ from os import path
 from pprint import pformat
 import webbrowser
 
-from dlapp import create_from_csv_data
-from dlapp import create_from_json_data
-from dlapp import create_from_yaml_data
-from dlapp.collection import Tabular
+from dlpro import create_from_csv_data
+from dlpro import create_from_json_data
+from dlpro import create_from_yaml_data
+from dlpro.collection import Tabular
 
-from dlapp import edition
-from dlapp.config import Data
+from dlpro import edition
+from dlpro.config import Data
 
 
 def get_relative_center_location(parent, width, height):
@@ -236,7 +236,7 @@ class Content:
 
 
 class Application:
-    """A DLApp application class.
+    """A DLPro application class.
 
     Attributes
     ----------
@@ -272,7 +272,7 @@ class Application:
         self.TextArea = tk.Text
         self.PanedWindow = ttk.PanedWindow
 
-        self._base_title = 'DLApp {}'.format(edition)
+        self._base_title = 'DLPro'
         self.root = tk.Tk()
         self.root.geometry('800x600+100+100')
         self.root.minsize(200, 200)
@@ -487,7 +487,7 @@ class Application:
         set_modal_dialog(about)
 
     def build_menu(self):
-        """Build menubar for dlapp."""
+        """Build menubar for dlpro."""
         menu_bar = tk.Menu(self.root)
         self.root.config(menu=menu_bar)
         file = tk.Menu(menu_bar)
@@ -508,7 +508,7 @@ class Application:
         help_.add_command(label='About', command=lambda: self.callback_help_about())
 
     def build_frame(self):
-        """Build layout for DLApp."""
+        """Build layout for DLPro."""
         self.paned_window = self.PanedWindow(self.root, orient=tk.VERTICAL)
         self.paned_window.pack(fill=tk.BOTH, expand=True)
 
@@ -526,7 +526,7 @@ class Application:
         self.paned_window.add(self.result_frame, weight=2)
 
     def build_textarea(self):
-        """Build input text for DLApp."""
+        """Build input text for DLPro."""
 
         self.text_frame.rowconfigure(0, weight=1)
         self.text_frame.columnconfigure(0, weight=1)
@@ -545,7 +545,7 @@ class Application:
         )
 
     def build_entry(self):
-        """Build input entry for DLApp."""
+        """Build input entry for DLPro."""
         def callback_run_btn():
             data = self.input_textarea.get('1.0', 'end').strip()
             filetype = self.radio_btn_var.get()
@@ -739,11 +739,11 @@ class Application:
         )
 
     def run(self):
-        """Launch DLApp."""
+        """Launch DLPro."""
         self.root.mainloop()
 
 
 def execute():
-    """Launch DLApp."""
+    """Launch DLPro."""
     app = Application()
     app.run()

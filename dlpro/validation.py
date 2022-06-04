@@ -13,9 +13,9 @@ from dateutil.parser import isoparse
 from dateutil.tz import gettz
 from dateutil.tz import UTC
 
-from dlapp.exceptions import ValidationIpv6PrefixError
-from dlapp.exceptions import ValidationOperatorError
-from dlapp.exceptions import ParsedTimezoneError
+from dlpro.exceptions import ValidationIpv6PrefixError
+from dlpro.exceptions import ValidationOperatorError
+from dlpro.exceptions import ParsedTimezoneError
 
 
 DEBUG = 0

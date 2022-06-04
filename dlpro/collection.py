@@ -5,16 +5,16 @@ import json
 import re
 from functools import partial
 from pprint import pprint
-from dlapp.argumenthelper import validate_argument_type
-from dlapp import utils
-from dlapp.parser import SelectParser
-from dlapp.validation import OpValidation
-from dlapp.validation import CustomValidation
+from dlpro.argumenthelper import validate_argument_type
+from dlpro import utils
+from dlpro.parser import SelectParser
+from dlpro.validation import OpValidation
+from dlpro.validation import CustomValidation
 
-from dlapp.exceptions import ListIndexError
-from dlapp.exceptions import ResultError
-from dlapp.exceptions import LookupClsError
-from dlapp.exceptions import ObjectArgumentError
+from dlpro.exceptions import ListIndexError
+from dlpro.exceptions import ResultError
+from dlpro.exceptions import LookupClsError
+from dlpro.exceptions import ObjectArgumentError
 
 
 class List(list):

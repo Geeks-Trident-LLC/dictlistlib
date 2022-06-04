@@ -1,4 +1,4 @@
-"""Module containing the attributes for dlapp."""
+"""Module containing the attributes for dlpro."""
 
 from os import path
 from textwrap import dedent
@@ -9,7 +9,7 @@ import yaml
 
 __version__ = '0.3.6'
 version = __version__
-__edition__ = 'Community'
+__edition__ = 'Pro'
 edition = __edition__
 
 __all__ = [
@@ -21,7 +21,7 @@ __all__ = [
 
 class Data:
     # main app
-    main_app_text = 'DLApp {} ({} Edition)'.format(version, edition)
+    main_app_text = 'DLPro {}'.format(version)
 
     # packages
     compare_versions_text = 'compare_versions v{}'.format(compare_versions.__version__)
@@ -38,7 +38,7 @@ class Data:
     company_url = 'https://www.geekstrident.com/'
 
     # URL
-    repo_url = 'https://github.com/Geeks-Trident-LLC/dlapp'
+    repo_url = 'https://github.com/Geeks-Trident-LLC/dlpro'
     # TODO: Need to update wiki page for documentation_url instead of README.md.
     documentation_url = path.join(repo_url, 'blob/develop/README.md')
     license_url = path.join(repo_url, 'blob/develop/LICENSE')

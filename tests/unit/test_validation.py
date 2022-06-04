@@ -1,8 +1,8 @@
-from dlapp.validation import RegexValidation
-from dlapp.validation import OpValidation
-from dlapp.validation import CustomValidation
-from dlapp.validation import VersionValidation
-from dlapp.validation import DatetimeValidation
+from dlpro.validation import RegexValidation
+from dlpro.validation import OpValidation
+from dlpro.validation import CustomValidation
+from dlpro.validation import VersionValidation
+from dlpro.validation import DatetimeValidation
 import pytest
 
 
