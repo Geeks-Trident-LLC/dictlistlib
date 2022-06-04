@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 setup(
     name='dlpro',
     version='0.3.6',
-    license='BSD-3-Clause',
+    license='Geeks Trident License',
     license_files=['LICENSE'],
     description='Python module for querying dictionary or list object.',
     long_description=open('README.md').read(),
@@ -36,7 +36,7 @@ setup(
         'Operating System :: MacOS :: MacOS X',
         'Operating System :: POSIX :: Linux',
         'Operating System :: Microsoft :: Windows',
-        'License :: OSI Approved :: BSD License',
+        'License :: Other/Proprietary License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
