@@ -1,4 +1,4 @@
-from dlapp import utils
+from dlpro import utils
 import pytest
 import re
 

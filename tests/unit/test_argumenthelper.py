@@ -1,10 +1,10 @@
 import pytest
 
-from dlapp.argumenthelper import validate_argument_type
-from dlapp.argumenthelper import validate_argument_choice
-from dlapp.argumenthelper import validate_argument_is_not_empty
-from dlapp.argumenthelper import ArgumentValidationError
-from dlapp.argumenthelper import ArgumentError
+from dlpro.argumenthelper import validate_argument_type
+from dlpro.argumenthelper import validate_argument_choice
+from dlpro.argumenthelper import validate_argument_is_not_empty
+from dlpro.argumenthelper import ArgumentValidationError
+from dlpro.argumenthelper import ArgumentError
 
 
 class Dummy:
