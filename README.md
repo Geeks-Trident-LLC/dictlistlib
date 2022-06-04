@@ -103,7 +103,7 @@ optional arguments:
 
 Open DLPro application
 ```bash
-$ dl-app                      # using python entry point
+$ dl-pro                      # using python entry point
 $ dlpro --gui                 # using console command line
 $ python -m dlpro --gui       # using python module invocation
 ```
@@ -124,5 +124,5 @@ $ # the same syntax can apply for yaml, yml, or csv file.
 Please use the [GitHub issue tracker](https://github.com/Geeks-Trident-LLC/dlpro/issues) to submit bugs or request features.
 
 ## Licenses
-- [BSD 3-Clause License](https://github.com/Geeks-Trident-LLC/dlpro/blob/develop/LICENSE)
+- [Geeks Trident License](https://github.com/Geeks-Trident-LLC/dlpro/blob/develop/LICENSE)
 
