@@ -8,7 +8,7 @@ from dlpro import create_from_csv_file
 from dlpro import create_from_json_file
 from dlpro import create_from_yaml_file
 
-from dlpro.collection import Tabular
+from genericlib import print_data_as_tabular
 
 import dlpro.tutorial as tu
 
@@ -58,7 +58,7 @@ def run_gui_application(options):
 def show_dependency(options):
     if options.dependency:
         from platform import uname, python_version
-        from dlpro.utils import Printer
+        from genericlib import Printer
         from dlpro.config import Data
         lst = [
             Data.main_app_text,
@@ -242,11 +242,7 @@ class Cli:
         query_obj = func(self.filename)
         result = query_obj.find(lookup=lookup, select=select)
         if result:
-            if options.tabular:
-                node = Tabular(result)
-                node.print()
-            else:
-                print(result)
+            print_data_as_tabular(result) if options.tabular else print(result)
         else:
             print('*** No record is found.')
 
