@@ -2,10 +2,12 @@
 
 import platform
 
+from genericlib import Text
+
 try:
     import tkinter as tk
 except ModuleNotFoundError as ex:
-    from dlpro.utils import Printer
+    from genericlib import Printer
     import sys
     lst = ["Failed to launch DLPro application because",
            "Python{} binary doesn't have tkinter module".format(platform.python_version()),
@@ -27,9 +29,9 @@ import webbrowser
 from dlpro import create_from_csv_data
 from dlpro import create_from_json_data
 from dlpro import create_from_yaml_data
-from dlpro.collection import Tabular
 
-from dlpro import edition
+from genericlib.utils import Tabular
+
 from dlpro.config import Data
 
 
@@ -207,26 +209,20 @@ class Content:
             try:
                 self.query_obj = create_from_yaml_data(self.data)
                 self.ready = True
-            except Exception as ex:
-                title = 'Processing YAML Data'
-                error = '{}: {}'.format(type(ex), ex)
-                create_msgbox(title=title, error=error)
+            except Exception as exc:
+                create_msgbox(title='Processing YAML Data', error=Text(exc))
         elif self.is_json:
             try:
                 self.query_obj = create_from_json_data(self.data)
                 self.ready = True
-            except Exception as ex:
-                title = 'Processing JSON data'
-                error = '{}: {}'.format(type(ex), ex)
-                create_msgbox(title=title, error=error)
+            except Exception as exc:
+                create_msgbox(title='Processing JSON data', error=Text(exc))
         elif self.is_csv:
             try:
                 self.query_obj = create_from_csv_data(self.data)
                 self.ready = True
-            except Exception as ex:
-                title = 'Processing CSV Data'
-                error = '{}: {}'.format(type(ex), ex)
-                create_msgbox(title=title, error=error)
+            except Exception as exc:
+                create_msgbox(title='Processing CSV Data', error=Text(exc))
 
     def process(self):
         """Analyze `self.filename` or `self.data` and
@@ -562,10 +558,8 @@ class Application:
                 self.result_textarea.delete("1.0", "end")
                 self.result_textarea.insert(tk.INSERT, str(result))
 
-            except Exception as ex:
-                title = 'Query Problem'
-                error = '{}: {}'.format(type(ex).__name__, ex)
-                create_msgbox(title=title, error=error)
+            except Exception as exc:
+                create_msgbox(title='Query Problem', error=Text(exc))
 
         def callback_tabular_btn():
             data = self.input_textarea.get('1.0', 'end').strip()
@@ -592,10 +586,8 @@ class Application:
                 self.result_textarea.delete("1.0", "end")
                 self.result_textarea.insert(tk.INSERT, str(text))
 
-            except Exception as ex:
-                title = 'Query Problem'
-                error = '{}: {}'.format(type(ex).__name__, ex)
-                create_msgbox(title=title, error=error)
+            except Exception as exc:
+                create_msgbox(title='Query Problem', error=Text(exc))
 
         def callback_clear_text_btn():
             self.input_textarea.delete("1.0", "end")
@@ -624,7 +616,7 @@ class Application:
                         self.set_title(title='<<PASTE - Clipboard>>')
                         self.input_textarea.insert(tk.INSERT, data)
                         self.radio_btn_var.set(self.content.filetype)
-            except Exception as ex:     # noqa
+            except Exception as _ex:        # noqa
                 title = 'Empty Clipboard',
                 message = 'CAN NOT paste because there is no data in pasteboard.'
                 create_msgbox(title=title, warning=message)

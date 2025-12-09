@@ -59,3 +59,11 @@ class ValidationOperatorError(ValidationError):
 
 class ParsedTimezoneError(Exception):
     """Use to capture timezone during parsing custom datetime."""
+
+
+class UtilsError(Exception):
+    """Use to capture utility error."""
+
+
+class RegexConversionError(UtilsError):
+    """Use to capture regular expression conversion error."""

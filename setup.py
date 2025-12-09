@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 setup(
     name='dlpro',
     version='0.3.6',
-    license='Geeks Trident License',
+    license='BSD-3-Clause',
     license_files=['LICENSE'],
     description='Python module for querying dictionary or list object.',
     long_description=open('README.md').read(),
