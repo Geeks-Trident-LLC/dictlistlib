@@ -2,7 +2,7 @@
 
 import platform
 
-from genericlib import Text
+from dictlistlib.utils import Text
 
 try:
     import tkinter as tk
