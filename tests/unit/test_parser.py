@@ -1,6 +1,6 @@
 import pytest
-# from dlpro import DLQuery
-from dlpro.parser import SelectParser
+# from dictlistlib import DLQuery
+from dictlistlib.parser import SelectParser
 
 
 @pytest.fixture

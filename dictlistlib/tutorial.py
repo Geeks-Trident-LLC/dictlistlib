@@ -4,7 +4,7 @@ from textwrap import dedent
 
 
 def get_tutorial_examples():
-    """Return the dlpro tutorial examples text."""
+    """Return the dictlistlib tutorial examples text."""
     text = '''
         Example 1:
         ---------
@@ -103,10 +103,10 @@ def get_tutorial_examples():
 
 
 def show_tutorial_dlquery():
-    """Print a dlpro tutorial."""
+    """Print a dictlistlib tutorial."""
     text = '''
         ########################################
-        # tutorial: dlpro                    #
+        # tutorial: dictlistlib                    #
         ########################################
         Assuming there is a list of dictionary
 
@@ -117,9 +117,9 @@ def show_tutorial_dlquery():
             ... ]
             >>>
 
-        We need to instantiate dlpro.DLQuery object
+        We need to instantiate dictlistlib.DLQuery object
 
-            >>> from dlpro import DLQuery
+            >>> from dictlistlib import DLQuery
             >>> query_obj = DLQuery(lst_of_dict)
     '''
 
@@ -129,7 +129,7 @@ def show_tutorial_dlquery():
 
 
 def show_tutorial_csv():
-    """Print a dlpro tutorial - case csv file."""
+    """Print a dictlistlib tutorial - case csv file."""
     text = '''
         ########################################
         # tutorial: CSV                        #
@@ -138,15 +138,15 @@ def show_tutorial_csv():
 
         ----------------------------------------
         Console usage: try the following
-            $ dlpro --filename=sample.csv --lookup="a" --select="WHERE a match Ap.+"
+            $ dictlistlib --filename=sample.csv --lookup="a" --select="WHERE a match Ap.+"
             ['Apple', 'Apricot']
             $
             $
-            $ dlpro --filename=sample.csv --lookup="a"  --select="WHERE c not_match [Cc]a.+"
+            $ dictlistlib --filename=sample.csv --lookup="a"  --select="WHERE c not_match [Cc]a.+"
             ['Apple', 'Avocado']
             $
             $
-            $ dlpro --filename=sample.csv --lookup="a"  --select="SELECT a, c WHERE c not_match [Cc]a.+"
+            $ dictlistlib --filename=sample.csv --lookup="a"  --select="SELECT a, c WHERE c not_match [Cc]a.+"
             [OrderedDict([('a', 'Apple'), ('c', 'Cherry')]), OrderedDict([('a', 'Avocado'), ('c', 'Clementine')])]
 
         ----------------------------------------
@@ -160,9 +160,9 @@ def show_tutorial_csv():
             Avocado,Blueberry,Clementine
             >>>
 
-        We need to instantiate dlpro.DLQuery object using create_from_csv_file function
+        We need to instantiate dictlistlib.DLQuery object using create_from_csv_file function
 
-            >>> from dlpro import create_from_csv_file
+            >>> from dictlistlib import create_from_csv_file
             >>> query_obj = create_from_csv_file('sample.csv')
     '''
 
@@ -172,7 +172,7 @@ def show_tutorial_csv():
 
 
 def show_tutorial_json():
-    """Print a dlpro tutorial - case json file."""
+    """Print a dictlistlib tutorial - case json file."""
     text = '''
         ########################################
         # tutorial: JSON                       #
@@ -181,15 +181,15 @@ def show_tutorial_json():
 
         ----------------------------------------
         Console usage: try the following
-            $ dlpro --filename=sample.json --lookup="a" --select="WHERE a match Ap.+"
+            $ dictlistlib --filename=sample.json --lookup="a" --select="WHERE a match Ap.+"
             ['Apple', 'Apricot']
             $
             $
-            $ dlpro --filename=sample.json --lookup="a"  --select="WHERE c not_match [Cc]a.+"
+            $ dictlistlib --filename=sample.json --lookup="a"  --select="WHERE c not_match [Cc]a.+"
             ['Apple', 'Avocado']
             $
             $
-            $ dlpro --filename=sample.json --lookup="a"  --select="SELECT a, c WHERE c not_match [Cc]a.+"
+            $ dictlistlib --filename=sample.json --lookup="a"  --select="SELECT a, c WHERE c not_match [Cc]a.+"
             [OrderedDict([('a', 'Apple'), ('c', 'Cherry')]), OrderedDict([('a', 'Avocado'), ('c', 'Clementine')])]
 
         ----------------------------------------
@@ -204,9 +204,9 @@ def show_tutorial_json():
             ]
             >>>
 
-        We need to instantiate dlpro.DLQuery object using create_from_json_file function
+        We need to instantiate dictlistlib.DLQuery object using create_from_json_file function
 
-            >>> from dlpro import create_from_json_file
+            >>> from dictlistlib import create_from_json_file
             >>> query_obj = create_from_json_file('sample.json')
     '''
 
@@ -216,7 +216,7 @@ def show_tutorial_json():
 
 
 def show_tutorial_yaml():
-    """Print a dlpro tutorial - case yaml file."""
+    """Print a dictlistlib tutorial - case yaml file."""
     text = '''
         ########################################
         # tutorial: yaml                        #
@@ -225,15 +225,15 @@ def show_tutorial_yaml():
 
         ----------------------------------------
         Console usage: try the following
-            $ dlpro --filename=sample.yaml --lookup="a" --select="WHERE a match Ap.+"
+            $ dictlistlib --filename=sample.yaml --lookup="a" --select="WHERE a match Ap.+"
             ['Apple', 'Apricot']
             $
             $
-            $ dlpro --filename=sample.yaml --lookup="a"  --select="WHERE c not_match [Cc]a.+"
+            $ dictlistlib --filename=sample.yaml --lookup="a"  --select="WHERE c not_match [Cc]a.+"
             ['Apple', 'Avocado']
             $
             $
-            $ dlpro --filename=sample.yaml --lookup="a"  --select="SELECT a, c WHERE c not_match [Cc]a.+"
+            $ dictlistlib --filename=sample.yaml --lookup="a"  --select="SELECT a, c WHERE c not_match [Cc]a.+"
             [OrderedDict([('a', 'Apple'), ('c', 'Cherry')]), OrderedDict([('a', 'Avocado'), ('c', 'Clementine')])]
 
         ----------------------------------------
@@ -252,9 +252,9 @@ def show_tutorial_yaml():
               c: Clementine
             >>>
 
-        We need to instantiate dlpro.DLQuery object using create_from_yaml_file function
+        We need to instantiate dictlistlib.DLQuery object using create_from_yaml_file function
 
-            >>> from dlpro import create_from_yaml_file
+            >>> from dictlistlib import create_from_yaml_file
             >>> query_obj = create_from_yaml_file('sample.yaml')
     '''
 

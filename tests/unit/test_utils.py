@@ -1,4 +1,4 @@
-from dlpro import utils
+from dictlistlib import utils
 import pytest
 import re
 

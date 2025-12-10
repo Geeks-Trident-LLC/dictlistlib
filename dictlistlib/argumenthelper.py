@@ -1,7 +1,7 @@
 """Module containing the logic for the argument helper."""
 
-from dlpro.exceptions import ArgumentError
-from dlpro.exceptions import ArgumentValidationError
+from dictlistlib.exceptions import ArgumentError
+from dictlistlib.exceptions import ArgumentValidationError
 
 
 def validate_argument_type(*args, **kwargs):
@@ -24,7 +24,7 @@ def validate_argument_type(*args, **kwargs):
 
     Example
     -------
-        >>> from dlpro.argumenthelper import validate_argument_type
+        >>> from dictlistlib.argumenthelper import validate_argument_type
         >>> def test(dict_obj):
         ...     validate_argument_type(dict, dict_obj=dict_obj)
         ...
@@ -79,7 +79,7 @@ def validate_argument_choice(**kwargs):
     -------
 
         >>>
-        >>> from dlpro.argumenthelper import validate_argument_choice
+        >>> from dictlistlib.argumenthelper import validate_argument_choice
         >>> def test(kind='car'):
         ...     '''argument `kind` must be either ``car`` or ``bicycle```'''
         ...     validate_argument_choice(kind=(kind, ('car', 'bicycle')))
@@ -130,7 +130,7 @@ def validate_argument_is_not_empty(**kwargs):
 
     Example
     -------
-        >>> from dlpro.argumenthelper import validate_argument_is_not_empty
+        >>> from dictlistlib.argumenthelper import validate_argument_is_not_empty
         >>> def test(node):
         ...     validate_argument_is_not_empty(node=node)
         ...

@@ -1,4 +1,4 @@
-"""Module containing the exception class for dlpro."""
+"""Module containing the exception class for dictlistlib."""
 
 
 class ListError(Exception):

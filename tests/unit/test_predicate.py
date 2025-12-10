@@ -1,4 +1,4 @@
-from dlpro.predicate import Predicate
+from dictlistlib.predicate import Predicate
 import pytest
 
 

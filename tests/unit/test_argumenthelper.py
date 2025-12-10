@@ -1,10 +1,10 @@
 import pytest
 
-from dlpro.argumenthelper import validate_argument_type
-from dlpro.argumenthelper import validate_argument_choice
-from dlpro.argumenthelper import validate_argument_is_not_empty
-from dlpro.argumenthelper import ArgumentValidationError
-from dlpro.argumenthelper import ArgumentError
+from dictlistlib.argumenthelper import validate_argument_type
+from dictlistlib.argumenthelper import validate_argument_choice
+from dictlistlib.argumenthelper import validate_argument_is_not_empty
+from dictlistlib.argumenthelper import ArgumentValidationError
+from dictlistlib.argumenthelper import ArgumentError
 
 
 class Dummy:

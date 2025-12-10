@@ -1,4 +1,4 @@
-"""Top-level module for dlpro.
+"""Top-level module for dictlistlib.
 
 This module
 
@@ -31,7 +31,7 @@ For example, assuming there is a list of dictionary
 we want to find any fruit beginning with letters Ap in group "a".  First,
 we need to import DLQuery library and instantiate a query_obj
 
->>> from dlpro import DLQuery
+>>> from dictlistlib import DLQuery
 >>> query_obj = DLQuery(lst_of_dict)
 
 Snippet 1: using a lookup with a wildcard filtering
@@ -70,20 +70,20 @@ Snippet 6: using lookup and select-statement to select c with WHERE clause
 >>> assert result == [{'c': 'Cherry'}, {'c': 'Cantaloupe'}]
 """
 
-from dlpro.dlquery import DLQuery         # noqa
-from dlpro.factory import create_from_yaml_file   # noqa
-from dlpro.factory import create_from_yaml_data   # noqa
-from dlpro.factory import create_from_json_file   # noqa
-from dlpro.factory import create_from_json_data   # noqa
-from dlpro.factory import create_from_csv_file    # noqa
-from dlpro.factory import create_from_csv_data    # noqa
+from dictlistlib.dlquery import DLQuery         # noqa
+from dictlistlib.factory import create_from_yaml_file   # noqa
+from dictlistlib.factory import create_from_yaml_data   # noqa
+from dictlistlib.factory import create_from_json_file   # noqa
+from dictlistlib.factory import create_from_json_data   # noqa
+from dictlistlib.factory import create_from_csv_file    # noqa
+from dictlistlib.factory import create_from_csv_data    # noqa
 
-from dlpro.validation import RegexValidation      # noqa
-from dlpro.validation import OpValidation         # noqa
-from dlpro.validation import CustomValidation     # noqa
+from dictlistlib.validation import RegexValidation      # noqa
+from dictlistlib.validation import OpValidation         # noqa
+from dictlistlib.validation import CustomValidation     # noqa
 
-from dlpro.config import version
-from dlpro.config import edition
+from dictlistlib.config import version
+from dictlistlib.config import edition
 
 __version__ = version
 __edition__ = edition

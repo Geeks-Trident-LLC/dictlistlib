@@ -1,13 +1,13 @@
 """Module containing the logic for predicate."""
 
 import logging
-from dlpro.validation import RegexValidation
-from dlpro.validation import OpValidation
-from dlpro.validation import CustomValidation
-from dlpro.validation import VersionValidation
-from dlpro.validation import DatetimeValidation
+from dictlistlib.validation import RegexValidation
+from dictlistlib.validation import OpValidation
+from dictlistlib.validation import CustomValidation
+from dictlistlib.validation import VersionValidation
+from dictlistlib.validation import DatetimeValidation
 
-from dlpro.exceptions import PredicateParameterDataTypeError
+from dictlistlib.exceptions import PredicateParameterDataTypeError
 
 logger = logging.getLogger(__file__)
 
