@@ -8,7 +8,7 @@ from dictlistlib import create_from_csv_file
 from dictlistlib import create_from_json_file
 from dictlistlib import create_from_yaml_file
 
-from genericlib import print_data_as_tabular
+from dictlistlib.utils import print_data_as_tabular
 
 import dictlistlib.tutorial as tu
 
@@ -58,7 +58,7 @@ def run_gui_application(options):
 def show_dependency(options):
     if options.dependency:
         from platform import uname, python_version
-        from genericlib import Printer
+        from dictlistlib.utils import Printer
         from dictlistlib.config import Data
         lst = [
             Data.main_app_text,

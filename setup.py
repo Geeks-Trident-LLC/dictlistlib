@@ -15,7 +15,12 @@ setup(
     author_email='tuyen@geekstrident.com',
     maintainer='Tuyen Mathew Duong',
     maintainer_email='tuyen@geekstrident.com',
-    install_requires=['pyyaml', 'compare_versions', 'python-dateutil'],
+    install_requires=[
+        'compare_versions',
+        'python-dateutil',
+        'pyyaml',
+        'pytest'
+    ],
     url='https://github.com/Geeks-Trident-LLC/dictlistlib',
     packages=find_packages(
         exclude=(
