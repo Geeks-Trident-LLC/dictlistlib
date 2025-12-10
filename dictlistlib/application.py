@@ -30,7 +30,7 @@ from dictlistlib import create_from_csv_data
 from dictlistlib import create_from_json_data
 from dictlistlib import create_from_yaml_data
 
-from genericlib.utils import Tabular
+from dictlistlib.utils import Tabular
 
 from dictlistlib.config import Data
 
