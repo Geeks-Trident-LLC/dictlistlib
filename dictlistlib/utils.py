@@ -2,6 +2,9 @@
 
 import re
 from collections import OrderedDict
+from textwrap import wrap
+import typing
+
 from dictlistlib.argumenthelper import validate_argument_type
 from dictlistlib.exceptions import RegexConversionError
 
@@ -161,3 +164,156 @@ class Text(BaseText):
         else:
             result.append(str(self))
         return result
+
+
+class Printer:
+    """A printer class.
+
+    Methods
+    Printer.get(data, header='', footer='', failure_msg='', width=80, width_limit=20) -> str
+    Printer.print(data, header='', footer='', failure_msg='', width=80, width_limit=20, print_func=None) -> None
+    """
+    @classmethod
+    def get(cls, data, header='', footer='',
+            width=80, width_limit=20, failure_msg=''):
+        """Decorate data by organizing header, data, footer, and failure_msg
+
+        Parameters
+        ----------
+        data (str, list): a text or a list of text.
+        header (str): a header text.  Default is empty.
+        footer (str): a footer text.  Default is empty.
+        width (int): width of displayed text.  Default is 80.
+        width_limit (int): minimum width of displayed text.  Default is 20.
+        failure_msg (str): a failure message.  Default is empty.
+        """
+        lst = []
+        result = []
+
+        sequence_type = (typing.List, typing.Tuple, typing.Set)
+
+        if width > 0:
+            right_bound = width - 4
+        else:
+            right_bound = 76
+
+        headers = []
+        if header:
+            if isinstance(header, sequence_type):
+                for item in header:
+                    for line in str(item).splitlines():
+                        headers.extend(wrap(line, width=right_bound))
+            else:
+                headers.extend(wrap(str(header), width=right_bound))
+
+        footers = []
+        if footer:
+            if isinstance(footer, sequence_type):
+                for item in footer:
+                    for line in str(item).splitlines():
+                        footers.extend(wrap(line, width=right_bound))
+            else:
+                footers.extend(wrap(str(footer), width=right_bound))
+
+        if data:
+            data = data if isinstance(data, sequence_type) else [data]
+        else:
+            data = []
+
+        for item in data:
+            if width > 0:
+                if width >= width_limit:
+                    for line in str(item).splitlines():
+                        lst.extend(wrap(line, width=right_bound + 4))
+                else:
+                    lst.extend(line.rstrip() for line in str(item).splitlines())
+            else:
+                lst.append(str(item))
+        length = max(len(str(i)) for i in lst + headers + footers)
+
+        if width >= width_limit:
+            length = right_bound if right_bound > length else length
+
+        result.append(Text.format('+-{}-+', '-' * length))
+        if header:
+            for item in headers:
+                result.append(Text.format('| {} |', item.ljust(length)))
+            result.append(Text.format('+-{}-+', '-' * length))
+
+        for item in lst:
+            result.append(item)
+        result.append(Text.format('+-{}-+', '-' * length))
+
+        if footer:
+            for item in footers:
+                result.append(Text.format('| {} |', item.ljust(length)))
+            result.append(Text.format('+-{}-+', '-' * length))
+
+        if failure_msg:
+            result.append(failure_msg)
+
+        txt = str.join(r'\n', result)
+        return txt
+
+    @classmethod
+    def print(cls, data, header='', footer='',
+              width=80, width_limit=20, failure_msg='', print_func=None):
+        """Decorate data by organizing header, data, footer, and failure_msg
+
+        Parameters
+        ----------
+        data (str, list): a text or a list of text.
+        header (str): a header text.  Default is empty.
+        footer (str): a footer text.  Default is empty.
+        width (int): width of displayed text.  Default is 80.
+        width_limit (int): minimum width of displayed text.  Default is 20.
+        failure_msg (str): a failure message.  Default is empty.
+        print_func (function): a print function.  Default is None.
+        """
+
+        txt = Printer.get(data, header=header, footer=footer,
+                          failure_msg=failure_msg, width=width,
+                          width_limit=width_limit)
+
+        print_func = print_func if callable(print_func) else print
+        print_func(txt)
+
+    @classmethod
+    def get_message(cls, fmt, *args, style='format', prefix=''):
+        """Get a message
+
+        Parameters
+        ----------
+        fmt (str): string format.
+        args (tuple): list of parameters for string interpolation.
+        style (str): either format or %.
+        prefix (str): a prefix.
+
+        Returns
+        -------
+        str: a message.
+        """
+
+        if args:
+            message = fmt.format(*args) if style == 'format' else fmt % args
+        else:
+            message = fmt
+
+        message = '{} {}'.format(prefix, message) if prefix else message
+        return message
+
+    @classmethod
+    def print_message(cls, fmt, *args, style='format', prefix='', print_func=None):
+        """Print a message
+
+        Parameters
+        ----------
+        fmt (str): string format.
+        args (tuple): list of parameters for string interpolation.
+        style (str): either format or %.
+        prefix (str): a prefix.
+        print_func (function): a print function.
+        """
+        message = cls.get_message(fmt, *args, style=style, prefix=prefix)
+        print_func = print_func if callable(print_func) else print
+        print_func(message)

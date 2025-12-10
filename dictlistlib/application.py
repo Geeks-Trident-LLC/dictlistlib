@@ -7,7 +7,7 @@ from dictlistlib.utils import Text
 try:
     import tkinter as tk
 except ModuleNotFoundError as ex:
-    from genericlib import Printer
+    from dictlistlib.utils import Printer
     import sys
     lst = ["Failed to launch dictlistlib application because",
            "Python{} binary doesn't have tkinter module".format(platform.python_version()),
