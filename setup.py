@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='dictlistlib',
-    version='0.3.6',
+    version='0.4.0',
     license='BSD-3-Clause',
     license_files=['LICENSE'],
     description='Python module for querying dictionary or list object.',
