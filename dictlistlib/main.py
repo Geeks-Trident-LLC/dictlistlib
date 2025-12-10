@@ -1,20 +1,20 @@
-"""Module containing the logic for the dlpro entry-points."""
+"""Module containing the logic for the dictlistlib entry-points."""
 
 import sys
 import argparse
 from os import path
-from dlpro.application import Application
-from dlpro import create_from_csv_file
-from dlpro import create_from_json_file
-from dlpro import create_from_yaml_file
+from dictlistlib.application import Application
+from dictlistlib import create_from_csv_file
+from dictlistlib import create_from_json_file
+from dictlistlib import create_from_yaml_file
 
 from genericlib import print_data_as_tabular
 
-import dlpro.tutorial as tu
+import dictlistlib.tutorial as tu
 
 
 def run_tutorial(options):
-    """Run a selection dlpro console CLI tutorial.
+    """Run a selection dictlistlib console CLI tutorial.
 
     Parameters
     ----------
@@ -38,7 +38,7 @@ def run_tutorial(options):
 
 
 def run_gui_application(options):
-    """Run dlpro GUI application.
+    """Run dictlistlib GUI application.
 
     Parameters
     ----------
@@ -46,7 +46,7 @@ def run_gui_application(options):
 
     Returns
     -------
-    None: will invoke ``dlpro.Application().run()`` and ``sys.exit(0)``
+    None: will invoke ``dictlistlib.Application().run()`` and ``sys.exit(0)``
     if end user requests `--application`
     """
     if options.gui:
@@ -59,7 +59,7 @@ def show_dependency(options):
     if options.dependency:
         from platform import uname, python_version
         from genericlib import Printer
-        from dlpro.config import Data
+        from dictlistlib.config import Data
         lst = [
             Data.main_app_text,
             'Platform: {0.system} {0.release} - Python {1}'.format(
@@ -78,21 +78,21 @@ def show_dependency(options):
 
 
 class Cli:
-    """dlpro console CLI application."""
+    """dictlistlib console CLI application."""
     def __init__(self):
         self.filename = ''
         self.filetype = ''
         self.result = None
 
         parser = argparse.ArgumentParser(
-            prog='dlpro',
+            prog='dictlistlib',
             usage='%(prog)s [options]',
             description='%(prog)s application',
         )
 
         parser.add_argument(
             '--gui', action='store_true',
-            help='Launch a dlpro GUI application.'
+            help='Launch a dictlistlib GUI application.'
         )
 
         parser.add_argument(
@@ -218,7 +218,7 @@ class Cli:
             self.filetype = filetype
 
     def run_cli(self, options):
-        """Execute dlpro command line.
+        """Execute dictlistlib command line.
 
         Parameters
         ----------
@@ -260,6 +260,6 @@ class Cli:
 
 
 def execute():
-    """Execute dlpro console CLI."""
+    """Execute dictlistlib console CLI."""
     app = Cli()
     app.run()

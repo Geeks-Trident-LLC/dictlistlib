@@ -1,12 +1,12 @@
 """Module containing the logic for querying dictionary or list object."""
 import re
 import operator
-from dlpro import utils
-from dlpro.argumenthelper import validate_argument_type
-# from dlpro.argumenthelper import validate_argument_is_not_empty
-from dlpro.collection import Element
+from dictlistlib import utils
+from dictlistlib.argumenthelper import validate_argument_type
+# from dictlistlib.argumenthelper import validate_argument_is_not_empty
+from dictlistlib.collection import Element
 
-from dlpro.parser import SelectParser
+from dictlistlib.parser import SelectParser
 
 
 class DLQuery:

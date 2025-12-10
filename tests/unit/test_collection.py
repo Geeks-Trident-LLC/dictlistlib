@@ -1,9 +1,9 @@
 import pytest
 
-from dlpro.collection import Element
-from dlpro.collection import LookupCls
-from dlpro.collection import List
-from dlpro.collection import ListIndexError
+from dictlistlib.collection import Element
+from dictlistlib.collection import LookupCls
+from dictlistlib.collection import List
+from dictlistlib.collection import ListIndexError
 
 
 @pytest.fixture

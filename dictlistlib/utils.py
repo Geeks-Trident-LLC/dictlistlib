@@ -2,8 +2,8 @@
 
 import re
 from collections import OrderedDict
-from dlpro.argumenthelper import validate_argument_type
-from dlpro.exceptions import RegexConversionError
+from dictlistlib.argumenthelper import validate_argument_type
+from dictlistlib.exceptions import RegexConversionError
 
 
 def convert_wildcard_to_regex(pattern, closed=False):

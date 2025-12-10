@@ -1,8 +1,8 @@
-from dlpro.validation import RegexValidation
-from dlpro.validation import OpValidation
-from dlpro.validation import CustomValidation
-from dlpro.validation import VersionValidation
-from dlpro.validation import DatetimeValidation
+from dictlistlib.validation import RegexValidation
+from dictlistlib.validation import OpValidation
+from dictlistlib.validation import CustomValidation
+from dictlistlib.validation import VersionValidation
+from dictlistlib.validation import DatetimeValidation
 import pytest
 
 

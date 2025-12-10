@@ -1,4 +1,4 @@
-"""Module containing the attributes for dlpro."""
+"""Module containing the attributes for dictlistlib."""
 
 from os import path
 from textwrap import dedent
@@ -21,7 +21,7 @@ __all__ = [
 
 class Data:
     # main app
-    main_app_text = 'DLPro {}'.format(version)
+    main_app_text = 'dictlistlib {}'.format(version)
 
     # packages
     compare_versions_text = 'compare_versions v{}'.format(compare_versions.__version__)
@@ -38,7 +38,7 @@ class Data:
     company_url = 'https://www.geekstrident.com/'
 
     # URL
-    repo_url = 'https://github.com/Geeks-Trident-LLC/dlpro'
+    repo_url = 'https://github.com/Geeks-Trident-LLC/dictlistlib'
     documentation_url = path.join(repo_url, 'blob/develop/README.md')
     license_url = path.join(repo_url, 'blob/develop/LICENSE')
 

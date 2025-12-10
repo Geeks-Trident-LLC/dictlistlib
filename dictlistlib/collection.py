@@ -4,16 +4,16 @@ import yaml
 import json
 import re
 from functools import partial
-from dlpro.argumenthelper import validate_argument_type
-from dlpro import utils
-from dlpro.parser import SelectParser
-from dlpro.validation import OpValidation
-from dlpro.validation import CustomValidation
+from dictlistlib.argumenthelper import validate_argument_type
+from dictlistlib import utils
+from dictlistlib.parser import SelectParser
+from dictlistlib.validation import OpValidation
+from dictlistlib.validation import CustomValidation
 
-from dlpro.exceptions import ListIndexError
-from dlpro.exceptions import ResultError
-from dlpro.exceptions import LookupClsError
-from dlpro.exceptions import ObjectArgumentError
+from dictlistlib.exceptions import ListIndexError
+from dictlistlib.exceptions import ResultError
+from dictlistlib.exceptions import LookupClsError
+from dictlistlib.exceptions import ObjectArgumentError
 
 
 class List(list):

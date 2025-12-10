@@ -1,10 +1,10 @@
-"""Packaging dlpro."""
+"""Packaging dictlistlib."""
 
 from setuptools import setup, find_packages
 
 
 setup(
-    name='dlpro',
+    name='dictlistlib',
     version='0.3.6',
     license='BSD-3-Clause',
     license_files=['LICENSE'],
@@ -16,7 +16,7 @@ setup(
     maintainer='Tuyen Mathew Duong',
     maintainer_email='tuyen@geekstrident.com',
     install_requires=['pyyaml', 'compare_versions', 'python-dateutil'],
-    url='https://github.com/Geeks-Trident-LLC/dlpro',
+    url='https://github.com/Geeks-Trident-LLC/dictlistlib',
     packages=find_packages(
         exclude=(
             'tests*', 'testing*', 'examples*',
@@ -26,9 +26,8 @@ setup(
     test_suite='tests',
     entry_points={
         'console_scripts': [
-            'dlpro = dlpro.main:execute',
-            'dlpro-gui = dlpro.application:execute',
-            'dl-pro = dlpro.application:execute'
+            'dictlistlib = dictlistlib.main:execute',
+            'dictlistlib-gui = dictlistlib.application:execute',
         ]
     },
     classifiers=[
