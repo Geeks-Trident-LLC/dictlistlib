@@ -507,3 +507,22 @@ class Tabular:
             pprint(tabular_data)
         else:
             print(tabular_data)
+
+
+def get_data_as_tabular(data, columns=None, justify='left', missing='not_found'):
+    """translate data (i.e a list of string or dictionary) to tabular format
+
+    Parameters
+    __________
+    data (list): a list of dictionary or a dictionary.
+    columns (list): a list of selecting headers.  Default is None.
+    justify (str): left|right|center.  Default is a left justification.
+    missing (str): report missing value if column is not found.
+            Default is not_found.
+
+    Returns:
+        str: tabular format
+    """
+    node = Tabular(data, columns=columns, justify=justify, missing=missing)
+    result = node.get()
+    return result
