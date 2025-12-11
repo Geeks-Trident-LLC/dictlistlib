@@ -1,8 +1,4 @@
-# dictlistlib
-
----
-
-dictlistlib is a powerful query utility designed for working with Python dictionaries and lists. It enables developers to validate and verify results using flexible query mechanisms such as simple wildcard characters, regular expressions, custom keywords, and SQL‑like select statements. By combining familiar querying techniques with Python’s native data structures, dictlistlib streamlines data exploration and manipulation, reducing the need for repetitive boilerplate code. Its intuitive design makes it easy to filter, search, and transform collections with precision, while maintaining readability and efficiency. With dictlistlib, developers gain a versatile tool that enhances productivity and supports cleaner, more maintainable workflows.
+**dictlistlib** is a powerful query utility designed for working with Python dictionaries and lists. It enables developers to validate and verify results using flexible query mechanisms such as simple wildcard characters, regular expressions, custom keywords, and SQL‑like select statements. By combining familiar querying techniques with Python’s native data structures, dictlistlib streamlines data exploration and manipulation, reducing the need for repetitive boilerplate code. Its intuitive design makes it easy to filter, search, and transform collections with precision, while maintaining readability and efficiency. With dictlistlib, developers gain a versatile tool that enhances productivity and supports cleaner, more maintainable workflows.
 
 ---
 
@@ -15,7 +11,7 @@ pip install dictlistlib
 ```  
 
 ### ✅ Requirements  
-- Python 3.7 or higher  
+- Python 3.9 or higher  
 - Internet connection to fetch dependencies from PyPI
 
 ---
