@@ -8,7 +8,9 @@ setup(
     version='0.4.0',
     license='BSD-3-Clause',
     license_files=['LICENSE'],
-    description='Python module for querying dictionary or list object.',
+    description='dictlistlib simplifies querying Python dictionaries and lists '
+                'with wildcards, regex, custom keywords, and SQL‑like statements, '
+                'streamlining data validation, filtering, and efficient workflows',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     author='Tuyen Mathew Duong',
