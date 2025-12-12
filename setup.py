@@ -38,11 +38,11 @@ setup(
         "Source": "https://github.com/Geeks-Trident-LLC/dictlistlib",
         "Tracker": "https://github.com/Geeks-Trident-LLC/dictlistlib/issues",
     },
-    test_suite="tests",
     entry_points={
         "console_scripts": [
             "dictlistlib = dictlistlib.main:execute",
             "dictlistlib-gui = dictlistlib.application:execute",
+            "dictlistlib-app = dictlistlib.application:execute",
         ]
     },
     classifiers=[
@@ -62,8 +62,6 @@ setup(
         "Operating System :: MacOS :: MacOS X",
         "Operating System :: POSIX :: Linux",
         "Operating System :: Microsoft :: Windows",
-        # license
-        "License :: OSI Approved :: BSD License",
         # programming language
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
