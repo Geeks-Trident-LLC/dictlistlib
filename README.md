@@ -170,6 +170,19 @@ If you encounter a bug or have a feature request, please submit it through the o
 
 ---
 
+## 🛣️ Roadmap
+
+We’re actively evolving **dictlistlib** to deliver more power and flexibility. Upcoming milestones include:
+
+- **🐼 Pandas Integration** - Extend functionality by integrating with the Pandas library, enabling advanced data manipulation, analysis, and seamless interoperability with DataFrames.
+
+- **🗄️ Simple SQL Support** - Add lightweight SQL‑like querying for improved usability and performance, making complex filtering and joins more intuitive.
+
+- **🧪 Testing & Feedback** - Expand automated test coverage and invite community feedback to ensure reliability, correctness, and continuous improvement.
+
+- **🤝 Collaboration** - Encourage contributions, discussions, and shared development efforts to grow the library together with the open‑source community.
+
+---
 ## 📜 License  
 
 This project is licensed under the **BSD 3‑Clause License**.  
@@ -188,3 +201,8 @@ The BSD 3‑Clause License strikes a balance between openness and protection. It
 
 ---
 
+## ⚠️ Disclaimer  
+
+This package is currently in **pre‑beta development**. Features, APIs, and dependencies may change before the official 1.x release. While it is functional, please use it with caution in production environments and expect ongoing updates as the project matures.  
+
+---  
