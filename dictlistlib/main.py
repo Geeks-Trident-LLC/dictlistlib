@@ -18,7 +18,7 @@ def run_tutorial(options):
 
     Parameters
     ----------
-    options (argparse.Namespace): a argparse.Namespace instance.
+    options (argparse.Namespace): an argparse.Namespace instance.
 
     Returns
     -------
@@ -42,7 +42,7 @@ def run_gui_application(options):
 
     Parameters
     ----------
-    options (argparse.Namespace): a argparse.Namespace instance.
+    options (argparse.Namespace): an argparse.Namespace instance.
 
     Returns
     -------
@@ -74,6 +74,32 @@ def show_dependency(options):
             lst.append('             {0[url]}'.format(pkg))
 
         Printer.print(lst)
+        sys.exit(0)
+
+
+def show_version(options):
+    """
+    Display the current dictlistlib version and exit.
+
+    This function checks whether the `--version` flag was provided
+    in the parsed CLI options. If so, it imports the `version`
+    string from the `dictlistlib` package, prints it to stdout, and
+    terminates the process with a success exit code.
+
+    Parameters
+    ----------
+    options : argparse.Namespace
+        Parsed command-line options. Must contain the `version` flag.
+
+    Returns
+    -------
+    None
+        Prints the application version and exits with
+        ``0`` if `--version` is specified.
+    """
+    if options.version:
+        from dictlistlib import version
+        print(f'dictlistlib {version}')
         sys.exit(0)
 
 
@@ -133,6 +159,11 @@ class Cli:
             '-u', '--tutorial', type=str, choices=['base', 'csv', 'json', 'yaml'],
             default='',
             help='Tutorial can be either base, csv, json, or yaml.'
+        )
+
+        parser.add_argument(
+            '-v', '--version', action='store_true', dest='version',
+            help='Show dictlistlib version.'
         )
 
         self.parser = parser
@@ -222,7 +253,7 @@ class Cli:
 
         Parameters
         ----------
-        options (argparse.Namespace): a argparse.Namespace instance.
+        options (argparse.Namespace): an argparse.Namespace instance.
         """
         lookup, select = options.lookup, options.select_statement
         if not options.lookup:
@@ -251,6 +282,7 @@ class Cli:
     def run(self):
         """Take CLI arguments, parse it, and process."""
         options = self.parser.parse_args()
+        show_version(options)
         show_dependency(options)
         run_tutorial(options)
         run_gui_application(options)
