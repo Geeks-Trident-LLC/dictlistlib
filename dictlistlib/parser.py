@@ -10,26 +10,38 @@ logger = logging.getLogger(__file__)
 
 
 class SelectParser:
-    """A Select Parser class.
+    """
+    Parser for SQL-like SELECT statements.
+
+    This class provides functionality to interpret and validate
+    simplified SELECT statements, manage column definitions,
+    and construct predicate functions for filtering data.
 
     Attributes
     ----------
-    select_statement (str): a select-statement.
-    columns (list): columns
-    predicate (function): a callable function.
-    logger (logging.Logger): a logger
-    on_exception (bool): raise `Exception` if set True, otherwise, return False.
-
-    Properties
-    ----------
-    is_zero_select -> bool
-    is_all_select -> bool
+    select_statement : str
+        The raw SELECT statement to be parsed.
+    columns : list
+        List of column names referenced in the statement.
+    predicate : callable
+        A function used to evaluate filtering conditions.
+    logger : logging.Logger
+        Logger instance for reporting parsing activity and errors.
+    on_exception : bool
+        If True, raise an Exception on errors; otherwise return False.
 
     Methods
     -------
-    get_predicate(expression) -> function
-    build_predicate() -> function
+    is_zero_select() -> bool
+        Indicates whether the SELECT statement returns zero columns.
+    is_all_select() -> bool
+        Indicates whether the SELECT statement requests all columns.
+    get_predicate(expression) -> callable
+        Build and return a predicate function from the given expression.
+    build_predicate() -> callable
+        Construct the predicate function based on the parsed statement.
     parse_statement() -> None
+        Parse the SELECT statement and populate attributes accordingly.
     """
     def __init__(self, select_statement, on_exception=True):
         self.select_statement = select_statement
