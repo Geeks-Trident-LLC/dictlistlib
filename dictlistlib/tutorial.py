@@ -1,10 +1,63 @@
-"""Module containing the tutorial functions."""
+"""
+Tutorial functions for dictlistlib.
+
+This module provides helper functions that print or return tutorial
+examples demonstrating how to use `dictlistlib` with different data
+sources (lists of dictionaries, CSV, JSON, and YAML files). These
+tutorials illustrate common query patterns such as lookups, wildcard
+matching, regex filtering, and SQL-like `SELECT` and `WHERE` clauses.
+
+Functions
+---------
+get_tutorial_examples() -> str
+    Return a string containing example queries and outputs for
+    dictlistlib, including wildcard and regex usage.
+
+show_tutorial_dlquery() -> None
+    Print a tutorial demonstrating dictlistlib usage with a list
+    of dictionaries and the `DLQuery` class.
+
+show_tutorial_csv() -> None
+    Print a tutorial demonstrating dictlistlib usage with data
+    loaded from a CSV file.
+
+show_tutorial_json() -> None
+    Print a tutorial demonstrating dictlistlib usage with data
+    loaded from a JSON file.
+
+show_tutorial_yaml() -> None
+    Print a tutorial demonstrating dictlistlib usage with data
+    loaded from a YAML file.
+
+Notes
+-----
+- These functions are intended for demonstration and educational
+  purposes, not for production use.
+- Tutorials show both console usage and Python API examples.
+- Example queries highlight dictlistlib’s ability to filter,
+  match, and select values from structured data.
+"""
 
 from textwrap import dedent
 
 
 def get_tutorial_examples():
-    """Return the dictlistlib tutorial examples text."""
+    """
+    Retrieve the dictlistlib tutorial examples as formatted text.
+
+    This function returns a multi-line string containing illustrative
+    examples of how to use `dictlistlib` queries. The examples demonstrate
+    common lookup patterns, wildcard usage, regex filtering, and SQL-like
+    `SELECT` and `WHERE` clauses. They are intended for educational and
+    reference purposes to help users understand dictlistlib’s query
+    capabilities.
+
+    Returns
+    -------
+    str
+        A dedented multi-line string containing tutorial examples for
+        dictlistlib usage.
+    """
     text = '''
         Example 1:
         ---------
@@ -103,10 +156,29 @@ def get_tutorial_examples():
 
 
 def show_tutorial_dlquery():
-    """Print a dictlistlib tutorial."""
+    """
+    Print a dictlistlib tutorial for querying a list of dictionaries.
+
+    This function prints a step-by-step tutorial demonstrating how to use
+    `dictlistlib.DLQuery` with a list of dictionaries. The tutorial includes
+    examples of lookups, wildcard matching, regex filtering, and SQL-like
+    `SELECT` and `WHERE` clauses. It is intended for educational purposes
+    to help users understand dictlistlib’s query capabilities.
+
+    The printed tutorial covers:
+    - Creating a sample list of dictionaries.
+    - Instantiating a `DLQuery` object.
+    - Executing queries with different lookup strategies.
+    - Using `SELECT` and `WHERE` clauses for filtering results.
+
+    Returns
+    -------
+    None
+        This function prints the tutorial text to standard output.
+    """
     text = '''
         ########################################
-        # tutorial: dictlistlib                    #
+        # tutorial: dictlistlib                #
         ########################################
         Assuming there is a list of dictionary
 
@@ -129,7 +201,27 @@ def show_tutorial_dlquery():
 
 
 def show_tutorial_csv():
-    """Print a dictlistlib tutorial - case csv file."""
+    """
+    Print a dictlistlib tutorial for querying data from a CSV file.
+
+    This function prints a step-by-step tutorial demonstrating how to use
+    `dictlistlib` with data loaded from a CSV file. The tutorial includes
+    both console usage examples and Python API examples. It shows how to
+    instantiate a `DLQuery` object from a CSV file and perform queries
+    using lookups, wildcard matching, regex filtering, and SQL-like
+    `SELECT` and `WHERE` clauses.
+
+    The printed tutorial covers:
+    - Viewing the contents of a sample CSV file.
+    - Running dictlistlib queries from the command line.
+    - Using `create_from_csv_file` to instantiate a `DLQuery` object.
+    - Executing queries with different filtering strategies.
+
+    Returns
+    -------
+    None
+        This function prints the tutorial text to standard output.
+    """
     text = '''
         ########################################
         # tutorial: CSV                        #
@@ -172,7 +264,27 @@ def show_tutorial_csv():
 
 
 def show_tutorial_json():
-    """Print a dictlistlib tutorial - case json file."""
+    """
+    Print a dictlistlib tutorial for querying data from a JSON file.
+
+    This function prints a step-by-step tutorial demonstrating how to use
+    `dictlistlib` with data loaded from a JSON file. The tutorial includes
+    both console usage examples and Python API examples. It shows how to
+    instantiate a `DLQuery` object from a JSON file and perform queries
+    using lookups, wildcard matching, regex filtering, and SQL-like
+    `SELECT` and `WHERE` clauses.
+
+    The printed tutorial covers:
+    - Viewing the contents of a sample JSON file.
+    - Running dictlistlib queries from the command line.
+    - Using `create_from_json_file` to instantiate a `DLQuery` object.
+    - Executing queries with different filtering strategies.
+
+    Returns
+    -------
+    None
+        This function prints the tutorial text to standard output.
+    """
     text = '''
         ########################################
         # tutorial: JSON                       #
@@ -216,7 +328,27 @@ def show_tutorial_json():
 
 
 def show_tutorial_yaml():
-    """Print a dictlistlib tutorial - case yaml file."""
+    """
+    Print a dictlistlib tutorial for querying data from a YAML file.
+
+    This function prints a step-by-step tutorial demonstrating how to use
+    `dictlistlib` with data loaded from a YAML file. The tutorial includes
+    both console usage examples and Python API examples. It shows how to
+    instantiate a `DLQuery` object from a YAML file and perform queries
+    using lookups, wildcard matching, regex filtering, and SQL-like
+    `SELECT` and `WHERE` clauses.
+
+    The printed tutorial covers:
+    - Viewing the contents of a sample YAML file.
+    - Running dictlistlib queries from the command line.
+    - Using `create_from_yaml_file` to instantiate a `DLQuery` object.
+    - Executing queries with different filtering strategies.
+
+    Returns
+    -------
+    None
+        This function prints the tutorial text to standard output.
+    """
     text = '''
         ########################################
         # tutorial: yaml                        #
