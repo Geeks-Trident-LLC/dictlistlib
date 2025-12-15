@@ -1,4 +1,29 @@
-"""Module containing the logic for the dictlistlib entry-points."""
+"""Entry-point logic for dictlistlib.
+
+This module defines the console and GUI entry-points for the dictlistlib
+application. It provides functions for running tutorials, launching the
+GUI, displaying dependencies, showing version information, and executing
+the command-line interface (CLI).
+
+Classes
+-------
+Cli
+    Encapsulates the dictlistlib console CLI, including argument parsing,
+    validation, and execution of queries.
+
+Functions
+---------
+run_tutorial(options)
+    Run a selected dictlistlib tutorial from the console.
+run_gui_application(options)
+    Launch the dictlistlib GUI application.
+show_dependency(options)
+    Display package dependencies and system information.
+show_version(options)
+    Display the current dictlistlib version.
+execute()
+    Execute the dictlistlib console CLI.
+"""
 
 import sys
 import argparse
@@ -14,17 +39,20 @@ import dictlistlib.tutorial as tu
 
 
 def run_tutorial(options):
-    """Run a selection dictlistlib console CLI tutorial.
+    """
+    Run a selected dictlistlib console tutorial.
 
     Parameters
     ----------
-    options (argparse.Namespace): an argparse.Namespace instance.
+    options : argparse.Namespace
+        Parsed command-line options. Must contain the `tutorial` flag.
 
     Returns
     -------
-    None: will call ``sys.exit(0)`` if end user requests a tutorial
+    None
+        Executes the requested tutorial and terminates the process
+        with ``sys.exit(0)``.
     """
-
     tutorial = options.tutorial.lower()
 
     if tutorial not in ['base', 'csv', 'json', 'yaml']:
@@ -38,16 +66,19 @@ def run_tutorial(options):
 
 
 def run_gui_application(options):
-    """Run dictlistlib GUI application.
+    """
+    Launch the dictlistlib GUI application.
 
     Parameters
     ----------
-    options (argparse.Namespace): an argparse.Namespace instance.
+    options : argparse.Namespace
+        Parsed command-line options. Must contain the `gui` flag.
 
     Returns
     -------
-    None: will invoke ``dictlistlib.Application().run()`` and ``sys.exit(0)``
-    if end user requests `--application`
+    None
+        Runs the GUI application and terminates the process
+        with ``sys.exit(0)`` if `--gui` is specified.
     """
     if options.gui:
         app = Application()
@@ -56,6 +87,20 @@ def run_gui_application(options):
 
 
 def show_dependency(options):
+    """
+    Display dictlistlib dependencies and system information.
+
+    Parameters
+    ----------
+    options : argparse.Namespace
+        Parsed command-line options. Must contain the `dependency` flag.
+
+    Returns
+    -------
+    None
+        Prints dependency information and terminates the process
+        with ``sys.exit(0)`` if `--dependency` is specified.
+    """
     if options.dependency:
         from platform import uname, python_version
         from dictlistlib.utils import Printer
@@ -94,8 +139,8 @@ def show_version(options):
     Returns
     -------
     None
-        Prints the application version and exits with
-        ``0`` if `--version` is specified.
+        Prints the application version and terminates the process
+        with ``sys.exit(0)`` if `--version` is specified.
     """
     if options.version:
         from dictlistlib import version
@@ -104,7 +149,24 @@ def show_version(options):
 
 
 class Cli:
-    """dictlistlib console CLI application."""
+    """
+    dictlistlib console CLI application.
+
+    This class encapsulates the command-line interface for dictlistlib.
+    It defines argument parsing, validation, and execution logic for
+    running queries against JSON, YAML, or CSV files.
+
+    Attributes
+    ----------
+    filename : str
+        The input filename provided via CLI.
+    filetype : str
+        The type of file (`csv`, `json`, `yaml`, or `yml`).
+    result : Any
+        The query result, if available.
+    parser : argparse.ArgumentParser
+        The argument parser instance used for CLI options.
+    """
     def __init__(self):
         self.filename = ''
         self.filetype = ''
@@ -170,30 +232,63 @@ class Cli:
 
     @property
     def is_csv_type(self):
-        """Return True if filetype is csv, otherwise, False."""
+        """
+        Check whether the current filetype is CSV.
+
+        This property evaluates the `filetype` attribute and returns
+        a boolean indicating if it is set to `"csv"`.
+
+        Returns
+        -------
+        bool
+            True if `self.filetype` equals `"csv"`, otherwise False.
+        """
         return self.filetype == 'csv'
 
     @property
     def is_json_type(self):
-        """Return True if filetype is json, otherwise, False."""
+        """
+        Check whether the current filetype is JSON.
+
+        This property evaluates the `filetype` attribute and returns
+        a boolean indicating if it is set to `"json"`.
+
+        Returns
+        -------
+        bool
+            True if `self.filetype` equals `"json"`, otherwise False.
+        """
         return self.filetype == 'json'
 
     @property
     def is_yaml_type(self):
-        """Return True if filetype is yml or yaml, otherwise, False."""
-        return self.filetype in ['yml', 'yaml']
+        """
+        Check whether the current filetype is YAML.
 
-    def validate_cli_flags(self, options):
-        """Validate argparse `options`.
-
-        Parameters
-        ----------
-        options (argparse.Namespace): an argparse.Namespace instance.
+        This property evaluates the `filetype` attribute and returns
+        a boolean indicating if it is set to either `"yaml"` or `"yml"`.
 
         Returns
         -------
-        bool: show ``self.parser.print_help()`` and call ``sys.exit(1)`` if
-        all flags are empty or False, otherwise, return True
+        bool
+            True if `self.filetype` equals `"yaml"` or `"yml"`, otherwise False.
+        """
+        return self.filetype in ['yml', 'yaml']
+
+    def validate_cli_flags(self, options):
+        """
+        Validate CLI flags.
+
+        Parameters
+        ----------
+        options : argparse.Namespace
+            Parsed command-line options.
+
+        Returns
+        -------
+        bool
+            True if at least one flag is provided. Otherwise,
+            prints help and terminates with ``sys.exit(1)``.
         """
 
         chk = any(bool(i) for i in vars(options).values())
@@ -205,16 +300,23 @@ class Cli:
         return True
 
     def validate_filename(self, options):
-        """Validate `options.filename` flag which is a file type of `csv`,
-        `json`, `yml`, or `yaml`.
+        """
+        Validate the `--filename` flag.
+
+        Ensures that the provided filename has a valid extension
+        (`csv`, `json`, `yml`, or `yaml`) or that a filetype flag
+        is explicitly specified.
 
         Parameters
         ----------
-        options (argparse.Namespace): an argparse.Namespace instance.
+        options : argparse.Namespace
+            Parsed command-line options.
 
         Returns
         -------
-        bool: True if `options.filename` is valid, otherwise, ``sys.exit(1)``
+        bool
+            True if the filename is valid. Otherwise, prints an
+            error message and terminates with ``sys.exit(1)``.
         """
         filename, filetype = str(options.filename), str(options.filetype)
         if not filename:
@@ -249,11 +351,19 @@ class Cli:
             self.filetype = filetype
 
     def run_cli(self, options):
-        """Execute dictlistlib command line.
+        """
+        Execute dictlistlib query via CLI.
 
         Parameters
         ----------
-        options (argparse.Namespace): an argparse.Namespace instance.
+        options : argparse.Namespace
+            Parsed command-line options.
+
+        Returns
+        -------
+        None
+            Executes the query, prints results, and terminates
+            with ``sys.exit(0)``.
         """
         lookup, select = options.lookup, options.select_statement
         if not options.lookup:
@@ -280,7 +390,17 @@ class Cli:
         sys.exit(0)
 
     def run(self):
-        """Take CLI arguments, parse it, and process."""
+        """
+        Parse CLI arguments and execute dictlistlib.
+
+        This method orchestrates the CLI workflow by parsing arguments,
+        showing version/dependency/tutorial information, validating flags
+        and filenames, and executing queries.
+
+        Returns
+        -------
+        None
+        """
         options = self.parser.parse_args()
         show_version(options)
         show_dependency(options)
@@ -292,6 +412,16 @@ class Cli:
 
 
 def execute():
-    """Execute dictlistlib console CLI."""
+    """
+    Execute dictlistlib console CLI.
+
+    This function instantiates the `Cli` class and runs its
+    `run()` method, serving as the main entry point for the
+    console application.
+
+    Returns
+    -------
+    None
+    """
     app = Cli()
     app.run()
