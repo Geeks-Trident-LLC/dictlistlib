@@ -1,4 +1,9 @@
-"""Module containing the attributes for dictlistlib."""
+"""Module containing metadata and attributes for dictlistlib.
+
+This module defines versioning, edition information, and the `Data` class,
+which centralizes application metadata such as package dependencies,
+company details, repository links, and license information.
+"""
 
 from os import path
 
@@ -19,6 +24,49 @@ __all__ = [
 
 
 class Data:
+    """
+    Centralized metadata container for the dictlistlib application.
+
+    The `Data` class provides static attributes and helper methods
+    that describe the application, its dependencies, company details,
+    and licensing information. It serves as a single source of truth
+    for metadata used throughout the application.
+
+    Attributes
+    ----------
+    main_app_text : str
+        Display text for the main application including version.
+    compare_versions_text : str
+        Version string for the `compare_versions` dependency.
+    compare_versions_link : str
+        PyPI link for the `compare_versions` package.
+    python_dateutil_text : str
+        Version string for the `python-dateutil` dependency.
+    python_dateutil_link : str
+        PyPI link for the `python-dateutil` package.
+    pyyaml_text : str
+        Version string for the `PyYAML` dependency.
+    pyyaml_link : str
+        PyPI link for the `PyYAML` package.
+    company : str
+        Name of the company maintaining dictlistlib.
+    company_url : str
+        Official company website.
+    repo_url : str
+        GitHub repository URL for dictlistlib.
+    documentation_url : str
+        Link to the README file in the repository.
+    license_url : str
+        Link to the LICENSE file in the repository.
+    years : str
+        License validity years.
+    license_name : str
+        Name of the license (BSD-3-Clause).
+    copyright_text : str
+        Copyright notice text.
+    license : str
+        Full license text loaded from the LICENSE file.
+    """
     # main app
     main_app_text = 'dictlistlib {}'.format(version)
 
@@ -50,6 +98,20 @@ class Data:
 
     @classmethod
     def get_dependency(cls):
+        """
+        Retrieve metadata for external package dependencies.
+
+        This method returns a dictionary containing version strings
+        and PyPI links for the key dependencies used by dictlistlib.
+
+        Returns
+        -------
+        dict
+            A dictionary with dependency names as keys and metadata
+            dictionaries as values. Each metadata dictionary contains:
+            - 'package': str, version string of the dependency.
+            - 'url': str, PyPI link for the dependency.
+        """
         dependencies = dict(
             compare_versions=dict(
                 package=cls.compare_versions_text,
