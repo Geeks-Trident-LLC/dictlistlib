@@ -1,69 +1,78 @@
-"""Module containing the exception class for dictlistlib."""
+"""Exception classes for dictlistlib.
+
+This module defines a collection of custom exception classes used
+throughout the dictlistlib application. Each exception type is
+specialized to capture and report errors in specific components,
+such as list operations, query execution, validation, predicates,
+and utility functions. By using these custom exceptions, the
+application provides clearer error handling and more descriptive
+feedback to developers and users.
+"""
 
 
 class ListError(Exception):
-    """Use to capture error for List instance"""
+    """Base exception for errors related to `List` instances."""
 
 
 class ListIndexError(ListError):
-    """Use to capture error for List instance"""
+    """Raised when an invalid index is accessed in a `List` instance."""
 
 
 class ResultError(Exception):
-    """Use to capture error for Result instance."""
+    """Raised when an error occurs while handling a `Result` instance."""
 
 
 class LookupClsError(Exception):
-    """Use to capture error for LookupObject instance"""
+    """Raised when an error occurs in a `LookupObject` instance."""
 
 
 class ObjectArgumentError(Exception):
-    """To capture error for Object class."""
+    """Raised when invalid arguments are passed to an `Object` class."""
 
 
 class ArgumentError(Exception):
-    """Use to capture argument error."""
+    """Base exception for argument-related errors."""
 
 
 class ArgumentValidationError(ArgumentError):
-    """Use to capture argument validation."""
+    """Raised when argument validation fails."""
 
 
 class DLQueryError(Exception):
-    """Use to capture error for DLQuery instance"""
+    """Base exception for errors related to `DLQuery` instances."""
 
 
 class DLQueryDataTypeError(DLQueryError):
-    """Use to capture error of unsupported query data type."""
+    """Raised when a query uses an unsupported data type."""
 
 
 class PredicateError(Exception):
-    """Use to capture the predicate error."""
+    """Base exception for errors related to predicates."""
 
 
 class PredicateParameterDataTypeError(PredicateError):
-    """Use to capture the parameter data type of predicate."""
+    """Raised when a predicate receives parameters of an invalid data type."""
 
 
 class ValidationError(Exception):
-    """Use to capture validation error."""
+    """Base exception for validation-related errors."""
 
 
 class ValidationIpv6PrefixError(ValidationError):
-    """Use to capture validation error for a prefix of IPv6 address."""
+    """Raised when an IPv6 prefix fails validation."""
 
 
 class ValidationOperatorError(ValidationError):
-    """Use to capture misused operator during Operator Validation."""
+    """Raised when an operator is misused during validation."""
 
 
 class ParsedTimezoneError(Exception):
-    """Use to capture timezone during parsing custom datetime."""
+    """Raised when parsing a custom datetime fails due to timezone issues."""
 
 
 class UtilsError(Exception):
-    """Use to capture utility error."""
+    """Base exception for utility-related errors."""
 
 
 class RegexConversionError(UtilsError):
-    """Use to capture regular expression conversion error."""
+    """Raised when a regular expression conversion fails."""
