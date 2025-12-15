@@ -1,4 +1,18 @@
-"""Module containing the logic for the parsing utility."""
+"""Parsing utility for dictlistlib.
+
+This module provides logic for interpreting simplified SQL-like
+`SELECT` statements used within dictlistlib. It supports parsing
+column definitions, validating syntax, and constructing predicate
+functions for filtering data. The parser is designed to work with
+dictlistlib’s query engine, enabling flexible selection and filtering
+of dictionary-based datasets.
+
+Classes
+-------
+SelectParser
+    A parser for SQL-like SELECT statements that extracts column
+    references and builds predicate functions for filtering.
+"""
 
 import re
 import logging
@@ -53,24 +67,59 @@ class SelectParser:
 
     @property
     def is_zero_select(self):
-        """Return True if no column is selected."""
+        """
+        Check whether the SELECT statement specifies zero columns.
+
+        This property evaluates the parsed `columns` attribute and
+        returns True if no column has been selected (represented
+        internally as `[None]`).
+
+        Returns
+        -------
+        bool
+            True if no column is selected, otherwise False.
+        """
         return self.columns == [None]
 
     @property
     def is_all_select(self):
-        """Return True if all columns are selected"""
-        return self.columns == []
+        """
+        Check whether the SELECT statement requests all columns.
 
-    def get_predicate(self, expression):
-        """Parse an expression and convert to callable predicate function.
-
-        Parameters
-        ----------
-        expression (str): an expression.  It can be a left express or a right expression.
+        This property evaluates the parsed `columns` attribute and
+        returns True if it is an empty list (`[]`), which internally
+        represents a `SELECT *` operation (i.e., selecting all columns).
 
         Returns
         -------
-        function: a callable function.
+        bool
+            True if all columns are selected, otherwise False.
+        """
+        return self.columns == []
+
+    def get_predicate(self, expression):
+        """
+        Build a predicate function from an expression.
+
+        This method parses a given expression string and converts it
+        into a callable predicate function that can be applied to
+        dictionary-based records. The expression may represent either
+        a left-hand or right-hand condition in a simplified SQL-like
+        `WHERE` clause.
+
+        Parameters
+        ----------
+        expression : str
+            A filtering expression to be parsed. Can represent either
+            a left-hand or right-hand condition (e.g., `"age > 30"`,
+            `"name == 'Alice'"`).
+
+        Returns
+        -------
+        callable
+            A predicate function that evaluates the given expression
+            against a record (dict). Returns True if the record satisfies
+            the condition, otherwise False.
         """
         pattern = '''(?i)["'](?P<key>.+)['"] +(?P<op>\\S+) +(?P<value>.+)'''
         match = re.match(pattern, expression)
@@ -202,15 +251,27 @@ class SelectParser:
         return func
 
     def build_predicate(self, expressions):
-        """Build a predicate by parsing expressions
+        """
+        Construct a predicate function from one or more expressions.
+
+        This method parses the provided expression(s) and builds a
+        callable predicate function that can be applied to dictionary-based
+        records. The resulting function evaluates whether a record
+        satisfies the conditions defined in the expression(s).
 
         Parameters
         ----------
-        expressions (str): single or multiple expressions.
+        expressions : str or list of str
+            A single expression (e.g., `"age > 30"`) or multiple expressions
+            (e.g., `["age > 30", "name == 'Alice'"]`) to be combined into
+            a predicate.
 
         Returns
         -------
-        function: a callable function.
+        callable
+            A predicate function that evaluates the given expression(s)
+            against a record (dict). Returns True if the record satisfies
+            all conditions, otherwise False.
         """
         def chain(data_, a_=None, b_=None, op_='', on_exception=False):
             try:
@@ -266,8 +327,29 @@ class SelectParser:
             return self.get_predicate(expressions)
 
     def parse_statement(self):
-        """Parse, analyze, and build a select-statement to selecting
-        columns and a callable predicate"""
+        """
+        Parse and analyze the SELECT statement.
+
+        This method interprets the raw `select_statement` string,
+        extracts column definitions, and constructs the associated
+        predicate function for filtering records. It updates the
+        parser’s internal state (`columns` and `predicate`) based
+        on the parsed statement.
+
+        Workflow
+        --------
+        1. Tokenize and validate the SELECT statement.
+        2. Identify column references (e.g., `name`, `age`).
+        3. Parse any filtering expressions (e.g., `age > 30`).
+        4. Build a callable predicate function for evaluation.
+        5. Store results in `self.columns` and `self.predicate`.
+
+        Returns
+        -------
+        None
+            Updates internal attributes (`columns`, `predicate`)
+            with parsed results.
+        """
         statement = self.select_statement
 
         if statement == '':
