@@ -931,17 +931,6 @@ class LookupCls:
     - ``empty`` / ``not_empty``
     - ``ip_address``, ``ipv4_address``, ``ipv6_address``
     - ``date``, ``datetime``, ``time``
-
-    Examples
-    --------
-    >>> LookupCls("abc=empty()")
-    Matches key "abc" with an empty value.
-
-    >>> LookupCls("abc=ipv4_address()")
-    Matches key "abc" with a value that is a valid IPv4 address.
-
-    >>> LookupCls("=regex(.*2021.*)")
-    Matches any key whose value contains "2021".
     """
     def __init__(self, lookup):
         self.lookup = str(lookup)
