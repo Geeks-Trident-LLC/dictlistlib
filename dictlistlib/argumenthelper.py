@@ -1,42 +1,40 @@
-"""Module containing the logic for the argument helper."""
+"""Argument helper utilities.
+
+This module provides validation functions for checking argument types,
+choices, and emptiness in functions or methods. It raises descriptive
+errors when arguments fail validation, ensuring safer and more explicit
+API usage.
+"""
 
 from dictlistlib.exceptions import ArgumentError
 from dictlistlib.exceptions import ArgumentValidationError
 
 
 def validate_argument_type(*args, **kwargs):
-    """Validate function/method argument type.
+    """
+    Validate that arguments match expected types.
 
     Parameters
     ----------
-    args (tuple): list of data type
-    kwargs (dict): list of argument that needs to valid their types
+    *args : type
+        One or more reference types (classes) to validate against.
+    **kwargs : dict
+        Keyword arguments mapping argument names to values that must
+        match one of the provided types.
 
     Returns
     -------
-    bool: True if arguments match their types.
+    bool
+        True if all arguments match the expected types.
 
     Raises
-    ______
-    ArgumentError: if `args` is empty or element of `args` is not class
-    ArgumentValidationError: if value's type of (key, value) pair doesn't match
-        with a type of element in `args`
-
-    Example
-    -------
-        >>> from dictlistlib.argumenthelper import validate_argument_type
-        >>> def test(dict_obj):
-        ...     validate_argument_type(dict, dict_obj=dict_obj)
-        ...
-        >>> dict_obj = dict()
-        >>> test(dict_obj)
-        >>> list_obj = list()
-        >>> test(list_obj)
-        Traceback (most recent call last):
-          File "<stdin>", line 1, in <module>
-          ...
-        dlquery.argumenthelper.ArgumentValidationError: dict_obj argument must be a data type of dict.
-        >>>
+    ------
+    ArgumentError
+        If no reference types are provided, or if any element in `args`
+        is not a class.
+    ArgumentValidationError
+        If a keyword argument value does not match any of the provided
+        types.
     """
     if len(args) == 0:
         msg = 'Cannot validate argument with no reference data type.'
@@ -58,41 +56,28 @@ def validate_argument_type(*args, **kwargs):
 
 
 def validate_argument_choice(**kwargs):
-    """Validate function/method argument choice.
+    """
+    Validate that arguments belong to a set of allowed choices.
 
     Parameters
     ----------
-    kwargs (dict): list of argument that needs to valid their types
-        a value of (key, value) pair must consist
-        argument value and a list of choices.
+    **kwargs : dict
+        Keyword arguments mapping argument names to a tuple of
+        (argument_value, choices). `choices` must be a non-empty
+        list or tuple of valid options.
 
     Returns
     -------
-    bool: True if argument matches its argument choice.
+    bool
+        True if all arguments match one of their allowed choices.
 
     Raises
     ------
-    ArgumentError: if invalid number of arguments of (key, value) pair
-    ArgumentValidationError: if argument is not belong to choices.
-
-    Example
-    -------
-
-        >>>
-        >>> from dictlistlib.argumenthelper import validate_argument_choice
-        >>> def test(kind='car'):
-        ...     '''argument `kind` must be either ``car`` or ``bicycle```'''
-        ...     validate_argument_choice(kind=(kind, ('car', 'bicycle')))
-        ...
-        >>> test(kind='car')
-        >>> test(kind='bicycle')
-        >>> test(kind='house')
-        Traceback (most recent call last):
-          File "<stdin>", line 1, in <module>
-          ...
-        dlquery.argumenthelper.ArgumentValidationError: kind argument must be a choice of ('car', 'bicycle').
-        >>>
-        >>>
+    ArgumentError
+        If the provided (argument, choices) pair is invalid or if
+        `choices` is empty or not a list/tuple.
+    ArgumentValidationError
+        If an argument value is not among the allowed choices.
     """
     for name, value in kwargs.items():
         try:
@@ -114,33 +99,24 @@ def validate_argument_choice(**kwargs):
 
 
 def validate_argument_is_not_empty(**kwargs):
-    """Validate function/method argument is/are not empty.
+    """
+    Validate that arguments are not empty.
 
     Parameters
     ----------
-    kwargs (dict): list of argument and its value
+    **kwargs : dict
+        Keyword arguments mapping argument names to values that must
+        not be empty (evaluating to False).
 
     Returns
     -------
-    bool: True if argument(s) is/are not empty.
+    bool
+        True if all arguments are non-empty.
 
-    Raise
-    -----
-    ArgumentValidationError: if argument is empty.
-
-    Example
-    -------
-        >>> from dictlistlib.argumenthelper import validate_argument_is_not_empty
-        >>> def test(node):
-        ...     validate_argument_is_not_empty(node=node)
-        ...
-        >>> test('abc')
-        >>> test('')
-        Traceback (most recent call last):
-          File "<stdin>", line 1, in <module>
-          ...
-        dlquery.argumenthelper.ArgumentValidationError: a node argument CANNOT be empty.
-        >>>
+    Raises
+    ------
+    ArgumentValidationError
+        If one or more arguments are empty.
     """
     empty_args = []
     for name, value in kwargs.items():
