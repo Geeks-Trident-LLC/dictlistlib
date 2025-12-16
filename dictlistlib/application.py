@@ -327,7 +327,7 @@ class Content:
                 title = 'File Extension'
                 create_msgbox(title=title, warning=message)
 
-            with open(self.filename, newline='') as stream:
+            with open(self.filename, newline='', encoding="utf-8") as stream:
                 self.data = stream.read().strip()
 
                 if not self.data:

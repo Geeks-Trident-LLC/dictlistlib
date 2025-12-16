@@ -758,7 +758,7 @@ class ObjectDict(dict):
         if isinstance(filename, IOBase):
             obj = json.load(filename, **kwargs)
         else:
-            with open(filename) as stream:
+            with open(filename, encoding="utf-8") as stream:
                 obj = json.load(stream, **kwargs)
 
         obj_dict = ObjectDict(obj)
@@ -787,7 +787,7 @@ class ObjectDict(dict):
         if isinstance(filename, IOBase):
             obj = yaml.load(filename, Loader=loader)    # noqa
         else:
-            with open(filename) as stream:
+            with open(filename, encoding="utf-8") as stream:
                 obj = yaml.load(stream, Loader=loader)
 
         obj_dict = ObjectDict(obj)

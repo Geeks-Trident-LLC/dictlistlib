@@ -41,7 +41,7 @@ def create_from_json_file(filename, **kwargs):
     if isinstance(filename, IOBase):
         obj = json.load(filename, **kwargs)
     else:
-        with open(filename) as stream:
+        with open(filename, encoding="utf-8") as stream:
             obj = json.load(stream, **kwargs)
 
     query_obj = DLQuery(obj)
@@ -85,7 +85,7 @@ def create_from_yaml_file(filename, loader=yaml.SafeLoader):
     DLQuery
         A `DLQuery` instance containing the parsed YAML data.
     """
-    with open(filename) as stream:
+    with open(filename, encoding="utf-8") as stream:
         obj = yaml.load(stream, Loader=loader)
         query_obj = DLQuery(obj)
         return query_obj
@@ -139,7 +139,7 @@ def create_from_csv_file(filename, fieldnames=None, restkey=None,
     DLQuery
         A `DLQuery` instance containing the parsed CSV data.
     """
-    with open(filename, newline='') as stream:
+    with open(filename, newline='', encoding="utf-8") as stream:
         csv_reader = csv.DictReader(
             stream, fieldnames=fieldnames, restkey=restkey,
             restval=restval, dialect=dialect, *args, **kwds
