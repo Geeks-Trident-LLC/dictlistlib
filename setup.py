@@ -7,7 +7,7 @@ with open("README.md", encoding="utf-8") as f:
 
 setup(
     name="dictlistlib",
-    version="0.4.0a0",  # alpha versioning
+    version="0.4.1a1",  # alpha versioning
     license="BSD-3-Clause",
     license_files=["LICENSE"],
     description=(
