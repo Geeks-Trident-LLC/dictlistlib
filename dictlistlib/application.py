@@ -22,12 +22,13 @@ try:
     import tkinter as tk
 except ModuleNotFoundError as ex:
     from dictlistlib.utils import Printer
+    from dictlistlib.constant import ECODE
     import sys
     lst = ["Failed to launch dictlistlib application because",
            "Python{} binary doesn't have tkinter module".format(platform.python_version()),
            "Please install tkinter module and try it again"]
     Printer.print(lst)
-    sys.exit(1)
+    sys.exit(ECODE.BAD)
 except Exception as ex:
     raise ex
 

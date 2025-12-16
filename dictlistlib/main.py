@@ -290,14 +290,14 @@ class Cli:
         -------
         bool
             True if at least one flag is provided. Otherwise,
-            prints help and terminates with ``sys.exit(1)``.
+            prints help and terminates with ``sys.exit(ECODE.BAD)``.
         """
 
         chk = any(bool(i) for i in vars(options).values())
 
         if not chk:
             self.parser.print_help()
-            sys.exit(1)
+            sys.exit(ECODE.BAD)
 
         return True
 
@@ -318,12 +318,12 @@ class Cli:
         -------
         bool
             True if the filename is valid. Otherwise, prints an
-            error message and terminates with ``sys.exit(1)``.
+            error message and terminates with ``sys.exit(ECODE.BAD)``.
         """
         filename, filetype = str(options.filename), str(options.filetype)
         if not filename:
             print('*** --filename flag CAN NOT be empty.')
-            sys.exit(1)
+            sys.exit(ECODE.BAD)
 
         self.filename = filename
         self.filetype = filetype
@@ -348,7 +348,7 @@ class Cli:
                        'please rerun with --filetype=<filetype> '
                        'where filetype is csv, json, yml, or yaml.')
             print(fmt.format(filename))
-            sys.exit(1)
+            sys.exit(ECODE.BAD)
         else:
             self.filetype = filetype
 
@@ -370,7 +370,7 @@ class Cli:
         lookup, select = options.lookup, options.select_statement
         if not options.lookup:
             print('*** --lookup flag CANNOT be empty.')
-            sys.exit(1)
+            sys.exit(ECODE.BAD)
 
         if self.is_csv_type:
             func = create_from_csv_file
@@ -380,7 +380,7 @@ class Cli:
             func = create_from_yaml_file
         else:
             print('*** invalid filetype.  Check with DEV.')
-            sys.exit(1)
+            sys.exit(ECODE.BAD)
 
         query_obj = func(self.filename)
         result = query_obj.find(lookup=lookup, select=select)
