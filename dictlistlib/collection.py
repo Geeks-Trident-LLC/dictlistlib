@@ -1,4 +1,11 @@
-"""Module containing the logic for the collection of data structure."""
+"""
+Module providing data structure collection logic.
+
+This module defines a custom `List` class that extends Python's built-in
+list with additional convenience properties and error handling. It also
+imports supporting utilities, parsers, and validation helpers from
+`dictlistlib`.
+"""
 
 import yaml
 import json
@@ -17,20 +24,73 @@ from dictlistlib.exceptions import ObjectArgumentError
 
 
 class List(list):
-    """This is a class for List Collection.
+    """
+    A custom list collection with extended properties and safe access methods.
+
+    This class inherits from Python's built-in `list` and adds convenience
+    properties for checking emptiness, retrieving the first and last elements,
+    and obtaining the total number of items. It also provides dynamic attribute
+    access for indexed elements (e.g., `list.index0`, `list.index_1`).
 
     Properties
     ----------
-    is_empty (boolean): a check point to tell an empty list or not.
-    first (Any): return a first element of a list
-    last (Any): return a last element of a list
-    total (int): total element in list
+    is_empty : bool
+        Indicates whether the list is empty.
+    first : Any
+        Returns the first element of the list. Raises `ListIndexError` if empty.
+    last : Any
+        Returns the last element of the list. Raises `ListIndexError` if empty.
+    total : int
+        The total number of elements in the list.
 
-    Raise
-    -----
-    ListIndexError: if a list is out of range.
+    Raises
+    ------
+    ListIndexError
+        Raised when attempting to access an element in an empty list or
+        when an index is out of range.
     """
     def __getattribute__(self, attr):
+        """
+        Provide custom attribute access for index-based lookup.
+
+        This method overrides the default attribute access to support
+        dynamic retrieval of list elements using attribute names that
+        match the pattern ``indexN`` or ``index_N`` (where N is a number).
+        For example, accessing ``obj.index0`` or ``obj.index_1`` will
+        return the corresponding item from the underlying list.
+
+        Parameters
+        ----------
+        attr : str
+            The attribute name being accessed. If it matches the
+            ``index<digit>`` pattern, it is interpreted as a list index;
+            otherwise, normal attribute lookup is performed.
+
+        Returns
+        -------
+        Any
+            The value of the requested attribute, or the list element
+            corresponding to the parsed index.
+
+        Raises
+        ------
+        ListIndexError
+            If the attribute matches the index pattern but the lookup
+            fails (e.g., invalid index).
+        AttributeError
+            If the attribute does not exist and does not match the
+            index pattern.
+
+        Notes
+        -----
+        - Attribute names like ``index0`` or ``index_2`` are converted
+          into integer indices (e.g., "0", "2") before lookup.
+        - Underscores in the index portion are replaced with hyphens
+          before conversion.
+        - If the attribute does not match the index pattern, the method
+          falls back to standard attribute resolution via
+          ``super().__getattribute__``.
+        """
         match = re.match(r'index(?P<index>_?[0-9]+)$', attr)    # noqa
         if match:
             index = match.group('index').replace('_', '-')
@@ -45,12 +105,27 @@ class List(list):
 
     @property
     def is_empty(self):
-        """Check an empty list."""
+        """
+        Check whether the List is empty.
+
+        Returns
+        -------
+        bool
+            True if the List contains no items (i.e., length is zero),
+            otherwise False.
+        """
         return self.total == 0
 
     @property
     def first(self):
-        """Get a first element of list if list is not empty"""
+        """
+        Return the first element of the list.
+
+        Raises
+        ------
+        ListIndexError
+            If the list is empty.
+        """
         if not self.is_empty:
             return self[0]
 
@@ -58,36 +133,60 @@ class List(list):
 
     @property
     def last(self):
-        """Get a last element of list if list is not empty"""
+        """
+        Return the last element of the list.
+
+        Raises
+        ------
+        ListIndexError
+            If the list is empty.
+        """
         if not self.is_empty:
             return self[-1]
         raise ListIndexError('Can not get last element of an empty list.')
 
     @property
     def total(self):
-        """Get a size of list"""
+        """
+        Get the total number of elements in the list.
+
+        This property provides a convenient way to access the length
+        of the list, equivalent to calling ``len(self)``.
+
+        Returns
+        -------
+        int
+            The number of elements contained in the list.
+        """
         return len(self)
 
 
 class Result:
-    """The Result Class to store data.
+    """
+    Container class for storing data and managing parent relationships.
+
+    The Result class encapsulates arbitrary data and optionally links
+    to a parent Result instance. It provides convenience methods and
+    properties to manage hierarchical relationships between results.
 
     Attributes
     ----------
-    data (Any): the data.
-    parent (Result): keyword arguments.
-
-    Properties
-    ----------
-    has_parent -> boolean
+    data : Any
+        The payload or content stored in this Result.
+    parent : Result or None
+        Optional parent Result instance. Defaults to None.
 
     Methods
     -------
+    has_parent() -> bool
+        True if this Result has a parent assigned, False otherwise.
     update_parent(parent: Result) -> None
+        Assign a new parent Result instance.
 
-    Raise
-    -----
-    ResultError: if parent is not instance of None or Result.
+    Raises
+    ------
+    ResultError
+        If the provided parent is not None or an instance of Result.
     """
     def __init__(self, data, parent=None):
         self.parent = None
@@ -95,11 +194,30 @@ class Result:
         self.update_parent(parent)
 
     def update_parent(self, parent):
-        """Update parent to Result
+        """
+        Update the parent reference of the current Result.
+
+        This method assigns a new parent to the Result. The parent must be
+        either an instance of `Result` (or the same class as the current
+        object) or `None`. If an invalid type is provided, a `ResultError`
+        is raised.
 
         Parameters
         ----------
-        parent (Result): a Result instance.
+        parent : Result or None
+            The new parent to assign. Must be a `Result` instance (or the
+            same class as `self`) or `None` to clear the parent reference.
+
+        Raises
+        ------
+        ResultError
+            If the provided parent is not a `Result` instance or `None`.
+
+        Notes
+        -----
+        - Passing `None` removes the parent reference.
+        - This method enforces type safety to ensure that only valid parent
+          objects are associated with the element.
         """
         if parent is None or isinstance(parent, self.__class__):
             self.parent = parent
@@ -109,21 +227,54 @@ class Result:
 
     @property
     def has_parent(self):
-        """Return True if Result has parent."""
+        """
+        Check whether the Result has a parent.
+
+        A Result is considered to have a parent if its `parent`
+        attribute references a valid `Result` instance.
+
+        Returns
+        -------
+        bool
+            True if the Result has a parent, otherwise False.
+        """
         return isinstance(self.parent, Result)
 
 
 class Element(Result):
-    """Element class.
+    """
+    The `Element` class extends `Result` and provides a unified interface
+    for handling different data types (scalars, lists, dictionaries, and
+    objects). Each `Element` may contain child elements if its data is
+    iterable, or a scalar value if not. It supports recursive traversal,
+    filtering, and lookup operations.
 
     Attributes
     ----------
-    data (any): a data.
-    index (str): a index value of data if data is list or dictionary.
-    parent (Element): an Element instance.
-    on_exception (bool): raise `Exception` if set True, otherwise, return False.
-    type (str): datatype name of data.
+    data : Any
+        The underlying data value represented by this element.
+    index : str
+        The index or key associated with the element if the parent data
+        is a list or dictionary. Defaults to an empty string.
+    parent : Element, optional
+        The parent `Element` instance in the hierarchy. Defaults to None.
+    on_exception : bool
+        If True, exceptions are raised during operations. If False,
+        operations return gracefully without raising.
+    type : str
+        A string representation of the data type (e.g., "dict", "list",
+        "int", "str", "object").
 
+    Notes
+    -----
+    - Iterable data (lists, tuples, sets, dicts) are converted into
+      child `Element` instances accessible via `children`.
+    - Scalar values (int, float, bool, str, None) are stored directly
+      in `value`.
+    - Provides convenience properties such as `is_leaf`, `is_scalar`,
+      `is_list`, and `is_dict` for type checks.
+    - Supports recursive search and filtering using `find` and
+      `filter_result`.
     """
     def __init__(self, data, index='', parent=None, on_exception=False):
         super().__init__(data, parent=parent)
@@ -133,6 +284,30 @@ class Element(Result):
         self._build(data)
 
     def __iter__(self):
+        """
+        Return an iterator over the element's underlying data.
+
+        This method enables iteration (`for ... in element`) depending on
+        the type of data wrapped by the element:
+
+        - If the element represents a dictionary, iteration yields its keys.
+        - If the element represents a list, iteration yields index positions
+          (0 through `len(data) - 1`).
+        - For all other types, iteration is not supported and a `TypeError`
+          is raised.
+
+        Returns
+        -------
+        iterator
+            An iterator over dictionary keys or list indices, depending on
+            the element type.
+
+        Raises
+        ------
+        TypeError
+            If the element does not represent a dictionary or list, making
+            it non-iterable.
+        """
         if self.type == 'dict':
             return iter(self.data.keys())
         elif self.type == 'list':
@@ -143,6 +318,30 @@ class Element(Result):
             raise TypeError(msg)
 
     def __getitem__(self, index):
+        """
+        Retrieve an item from the element's underlying data by index or key.
+
+        This method enables subscript notation (e.g., `element[index]`) for
+        elements that wrap dictionary or list data. If the element does not
+        represent a subscriptable type, a `TypeError` is raised.
+
+        Parameters
+        ----------
+        index : int or str
+            The position (for lists) or key (for dictionaries) used to access
+            the corresponding item in the underlying data.
+
+        Returns
+        -------
+        Any
+            The item stored at the given index or key in the element's data.
+
+        Raises
+        ------
+        TypeError
+            If the element's type is not a dictionary or list, making it
+            non-subscriptable.
+        """
         if self.type not in ['dict', 'list']:
             fmt = '{!r} object is not subscriptable.'
             msg = fmt.format(type(self).__name__)
@@ -151,6 +350,47 @@ class Element(Result):
         return result
 
     def _build(self, data):
+        """
+        Construct the internal representation of an element based on its data type.
+
+        This method initializes the `children`, `value`, and `type` attributes
+        of the element depending on the nature of the provided data. Composite
+        types (dicts, lists, tuples, sets) are expanded into child `Element`
+        instances, while scalar and object types are stored directly as values.
+
+        Parameters
+        ----------
+        data : Any
+            The input data to wrap in the element. Can be a dictionary, list,
+            tuple, set, scalar (int, float, bool, str, None), or any other object.
+
+        Notes
+        -----
+        - If `data` is a dict:
+            Each key-value pair is converted into a child `Element` with the
+            key as its index. The element type is set to `"dict"`.
+        - If `data` is a list, tuple, or set:
+            Each item is converted into a child `Element` with an auto-generated
+            index (`"__index__<i>"`). The element type is set to `"list"`.
+        - If `data` is a scalar (int, float, bool, str, or None):
+            The element type is set to the scalar type name, and the value is
+            stored directly in `self.value`.
+        - For all other types:
+            The element type is set to `"object"`, and the value stores
+            directly in `self.value`.
+
+        Attributes Set
+        --------------
+        children : List or None
+            A list of child `Element` instances if the data is composite,
+            otherwise None.
+        value : Any or None
+            The scalar or object value if the data is non-composite,
+            otherwise None.
+        type : str
+            A string describing the type of the data ("dict", "list",
+            scalar type name, or "object").
+        """
         self.children = None
         self.value = None
         if isinstance(data, dict):
@@ -177,45 +417,130 @@ class Element(Result):
 
     @property
     def has_children(self):
-        """Return True if an element has children."""
+        """
+        Check whether the element contains child elements.
+
+        An element is considered to have children if its underlying data
+        is a composite type (e.g., list or dictionary) and child `Element`
+        instances have been created during initialization.
+
+        Returns
+        -------
+        bool
+            True if the element has one or more children, otherwise False.
+        """
         return bool(self.children)
 
     @property
     def is_element(self):
-        """Return True if an element has children."""
+        """
+        Check whether the element is a composite node.
+
+        An element is considered a composite if it contains children,
+        meaning it represents a nested structure (e.g., a list or dictionary).
+
+        Returns
+        -------
+        bool
+            True if the element has children, otherwise False.
+        """
         return self.has_children
 
     @property
     def is_leaf(self):
-        """Return True if an element doesn't have children."""
+        """
+        Check whether the element is a leaf node.
+
+        A leaf node is defined as an element that has no children
+        (i.e., it does not contain nested elements).
+
+        Returns
+        -------
+        bool
+            True if the element has no children, otherwise False.
+        """
         return not self.has_children
 
     @property
     def is_scalar(self):
-        """Return True if an element is a scalar type."""
+        """
+        Check whether the element represents a scalar value.
+
+        Scalar values are defined here as primitive, non-iterable types:
+        integers, floats, booleans, strings, or None.
+
+        Returns
+        -------
+        bool
+            True if the element's underlying data is a scalar type
+            (int, float, bool, str, or None), otherwise False.
+        """
         return isinstance(self.data, (int, float, bool, str, None))     # noqa
 
     @property
     def is_list(self):
-        """Return True if an element is a list type."""
+        """
+        Check if the element represents a list.
+
+        Returns
+        -------
+        bool
+            True if the element's underlying data type is a list,
+            otherwise False.
+        """
         return self.type == 'list'
 
     @property
     def is_dict(self):
-        """Return True if an element is a list type."""
-        return self.type == 'dict'
-
-    def filter_result(self, records, select_statement):
-        """Filter a list of records based on select statement
-
-        Parameters
-        ----------
-        records (List): a list of record.
-        select_statement (str): a select statement.
+        """
+        Check if the element represents a dictionary.
 
         Returns
         -------
-        List: list of filtered records.
+        bool
+            True if the element's underlying data type is a dictionary,
+            otherwise False.
+        """
+        return self.type == 'dict'
+
+    def filter_result(self, records, select_statement):
+        """
+        Apply a selection filter to a list of records.
+
+        This method parses a given select statement and filters the provided
+        records accordingly. Depending on the parsed selection, it can return
+        raw record data, parent data, or a subset of columns.
+
+        Parameters
+        ----------
+        records : List[Element]
+            A list of `Element` records to be filtered.
+        select_statement : str
+            A selection expression used to determine which records or fields
+            should be included in the result. Parsed by `SelectParser`.
+
+        Returns
+        -------
+        List
+            A new `List` containing filtered results. The contents vary based
+            on the select statement:
+            - If a predicate is defined, only matching records are included.
+            - If `is_zero_select` is True, returns the `data` of each record.
+            - If `is_all_select` is True, returns the `parent.data` of each record.
+            - Otherwise, returns dictionaries containing only the selected columns.
+
+        Raises
+        ------
+        Exception
+            If `on_exception` is True and an error occurs during parsing or
+            predicate evaluation.
+
+        Notes
+        -----
+        - The `SelectParser` is responsible for interpreting the select statement
+          and generating a predicate function.
+        - When no predicate is defined, all records are included by default.
+        - Column filtering ensures missing keys are set to `None`.
         """
         result = List()
         select_obj = SelectParser(select_statement,
@@ -249,13 +574,37 @@ class Element(Result):
         return result
 
     def find_(self, node, lookup_obj, result):
-        """Recursively search a lookup and store a found record to result
+        """
+        Recursively traverse an element tree to locate records matching a lookup.
+
+        This helper method walks through the children of a given `Element`
+        node, applying lookup rules to determine whether each child should
+        be added to the result set. It supports both dictionary and list
+        structures, and continues recursion into nested elements.
 
         Parameters
         ----------
-        node (Element): a `Element` instance.
-        lookup_obj (LookupCls): a LookupCls instance.
-        result (List): a found result.
+        node : Element
+            The current `Element` node to inspect. Must be of type dict or list
+            to have children.
+        lookup_obj : LookupCls
+            A `LookupCls` instance that defines the matching rules. Provides
+            methods such as `is_left_matched` and `is_right_matched` for
+            evaluating keys and values.
+        result : List
+            A mutable list used to collect matching `Element` instances. This
+            list is updated in place as matches are found.
+
+        Notes
+        -----
+        - For list nodes, recursion continues into child elements without
+          applying key/value matching.
+        - For dict nodes, the child's index (key) is checked against the
+          left-hand lookup condition. If matched, the right-hand condition
+          (if present) is applied to the child's data.
+        - Matching children are appended directly to the `result` list.
+        - Recursion proceeds into child elements if they themselves contain
+          nested structures.
         """
         if node.is_dict or node.is_list:
             for child in node.children:
@@ -273,17 +622,41 @@ class Element(Result):
                         self.find_(child, lookup_obj, result)
 
     def find(self, lookup, select=''):
-        """recursively search a lookup.
-
-        Parameters
-        ---------
-        lookup (str): a search pattern.
-        select (str): a select statement.
-
-        Returns
-        -------
-        List: list of record
         """
+         Recursively search for elements matching a lookup expression.
+
+         This method traverses the element tree, applying a lookup pattern
+         to identify matching nodes. The results are then optionally filtered
+         using a select statement to refine the output.
+
+         Parameters
+         ----------
+         lookup : str
+             A lookup expression or search pattern used to locate matching
+             elements within the hierarchy. Parsed by `LookupCls`.
+         select : str, optional
+             A select statement that determines how the matched records
+             should be returned (e.g., raw data, parent data, or specific
+             columns). Defaults to an empty string, meaning no additional
+             filtering.
+
+         Returns
+         -------
+         List
+             A `List` of records that match the lookup criteria. The exact
+             contents depend on the select statement:
+             - Without a select statement, returns matching `Element` records.
+             - With `is_zero_select`, returns the `data` of each record.
+             - With `is_all_select`, returns the `parent.data` of each record.
+             - With column selection, returns dictionaries containing only
+               the specified columns.
+
+         Notes
+         -----
+         - Internally, this method delegates recursive traversal to `find_`.
+         - Filtering and projection of results are handled by `filter_result`.
+         - Useful for querying nested structures such as lists and dictionaries.
+         """
         records = List()
         lkup_obj = LookupCls(lookup)
         self.find_(self, lkup_obj, records)
@@ -385,7 +758,7 @@ class ObjectDict(dict):
         if isinstance(filename, IOBase):
             obj = json.load(filename, **kwargs)
         else:
-            with open(filename) as stream:
+            with open(filename, encoding="utf-8") as stream:
                 obj = json.load(stream, **kwargs)
 
         obj_dict = ObjectDict(obj)
@@ -414,7 +787,7 @@ class ObjectDict(dict):
         if isinstance(filename, IOBase):
             obj = yaml.load(filename, Loader=loader)    # noqa
         else:
-            with open(filename) as stream:
+            with open(filename, encoding="utf-8") as stream:
                 obj = yaml.load(stream, Loader=loader)
 
         obj_dict = ObjectDict(obj)
@@ -499,59 +872,65 @@ class ObjectDict(dict):
 
 
 class LookupCls:
-    """To build a lookup object.
+    """
+    Utility class for constructing and parsing lookup expressions.
+
+    The `LookupCls` provides a flexible mechanism to define search
+    criteria for dictionary-like structures. A lookup expression
+    consists of two parts:
+    - A **left lookup**: matches dictionary keys (supports text,
+      wildcard, or regex).
+    - A **right lookup**: matches dictionary values (supports text,
+      wildcard, regex, or callable predicates).
 
     Attributes
     ----------
-    lookup (str): a search criteria.
-    left (str): a left lookup which uses to match a key of dictionary.
-            It is a regular expression.
-    right (str, callable): a right lookup that uses to match a value of
-            dictionary.  It that can be regular expression pattern
-            or a callable function, i.e. Predicate function.
+    lookup : str
+        The raw lookup expression provided by the user.
+    left : str
+        The parsed left-hand lookup used to match dictionary keys.
+        Typically a string or regular expression.
+    right : str or callable
+        The parsed right-hand lookup used to match dictionary values.
+        Can be a string, regex pattern, or a callable predicate
+        function.
 
     Notes
     -----
-    A lookup consists two parts:
-        + a left lookup which uses to match a key of dictionary.
-        + a right lookup which uses to match value of dictionary.
-        The proper syntax of lookup can be:
+    Supported lookup forms include:
 
-        case 1: lookup='abc'
-            a left lookup search any key which key name is abc.
-            while a right lookup is empty.  No action.
+    1. ``lookup='abc'``
+       - Left lookup: matches keys named "abc".
+       - Right lookup: empty (no value check).
 
-        case 2: lookup='abc=xyz'
-            a left lookup searches any key which key name is abc.
-            a right lookup searches item of dict where key == abc and its value ==xyz.
+    2. ``lookup='abc=xyz'``
+       - Left lookup: matches keys named "abc".
+       - Right lookup: matches values equal to "xyz".
 
-        case 3: lookup='=xyz'
-            a left lookup is empty that means all keys.
-            a right lookup search item of dict where any value of keys == xyz.
+    3. ``lookup='=xyz'``
+       - Left lookup: empty (matches all keys).
+       - Right lookup: matches values equal to "xyz".
 
-        case 4: lookup='abc=_wildcard(*xyz*)
-            a left lookup searches any key which key name is abc.
-            a right lookup searches items of dict where key == abc and its value contains xzy
+    4. ``lookup='abc=_wildcard(*xyz*)'``
+       - Left lookup: matches keys named "abc".
+       - Right lookup: matches values containing "xyz" via wildcard.
 
-        Both left and right supports text, wildcard, and regex.
-        The following combination lookups are valid:
-            abc=_wildcard(*xyz*)
-            abc=_iwildcard(*xyz*)
-            abc=_regex(.*xyz.*)
-            abc=_iregex(.*xyz.*)
-            _wildcard([Aa][Bb]c)=_wildcard(*xyz*)
-            _wildcard([Aa][Bb]c)=_regex(.*xyz.*)
-            =_wildcard(*xyz*)
-            =_regex(.*xyz.*)
+    Both left and right lookups support:
+    - Plain text
+    - Wildcards (e.g., ``_wildcard(*xyz*)``)
+    - Regex (e.g., ``_regex(.*xyz.*)``)
+    - Case-insensitive variants (``_iwildcard``, ``_iregex``)
 
-        Furthermore, right lookup also support custom keyword such as
-            empty, not_empty, ip_address, ipv4_address,
-            ipv6_address, date, datetime, time, ...
+    Examples of valid combinations:
+    - ``abc=_wildcard(*xyz*)``
+    - ``abc=_iregex(.*xyz.*)``
+    - ``_wildcard([Aa][Bb]c)=_regex(.*xyz.*)``
+    - ``=ipv4_address()``
 
-        Example:
-            abc=empty(), i.e. searches key name is abc and its value is empty.
-            abc=ipv4_address(), i.e. searches key name is abc and its value is IPv4 address.
-            abc=date(), i.e. search key name is abc and its value is date such as 2021-06-16.
+    The right lookup also supports custom keywords such as:
+    - ``empty`` / ``not_empty``
+    - ``ip_address``, ``ipv4_address``, ``ipv6_address``
+    - ``date``, ``datetime``, ``time``
     """
     def __init__(self, lookup):
         self.lookup = str(lookup)
@@ -561,21 +940,73 @@ class LookupCls:
 
     @property
     def is_right(self):
+        """
+        Check whether the lookup expression includes a right-hand component.
+
+        The right-hand lookup represents the value-matching part of a
+        lookup expression. It may be defined as a string, regular
+        expression, or callable predicate. This property evaluates to
+        True if such a component exists, and False otherwise.
+
+        Returns
+        -------
+        bool
+            True if the lookup has a right-hand component, otherwise False.
+        """
         return bool(self.right)
 
     @classmethod
     def parse(cls, text):
-        """Parse a lookup statement.
+        """
+        Parse a lookup expression into a regular expression pattern or validation function.
+
+        This method interprets a lookup string and converts it into either:
+        - A compiled regular expression pattern (for text, wildcard, or regex lookups).
+        - A callable predicate function (for custom validations or comparison operators).
 
         Parameters
         ----------
-            text (str): a lookup.
+        text : str
+            The lookup expression to parse. Examples include:
+            - "_regex(.*xyz.*)"
+            - "_wildcard(*abc*)"
+            - "is_empty()"
+            - "lt(10)"
 
         Returns
         -------
-        str: a regular expression pattern.
+        str or callable
+            A regular expression pattern string if the lookup is regex/wildcard/text-based,
+            or a callable function if the lookup corresponds to a custom validation or
+            comparison operator.
+
+        Raises
+        ------
+        LookupClsError
+            If the lookup expression cannot be parsed into a valid pattern or function.
         """
         def parse_(text_):
+            """
+            Inner helper method of `LookupCls.parse`
+
+            This function parses a lookup expression that uses one of the
+            supported methods: "text", "wildcard", or "regex". It also
+            supports the optional "i" flag for case-insensitive matching.
+
+            Parameters
+            ----------
+            text_ : str
+                A lookup expression containing one of the supported methods:
+                "text", "wildcard", or "regex". May include the "i" option
+                for case-insensitive matching.
+
+            Returns
+            -------
+            tuple
+                A tuple containing:
+                - pattern (str): The converted regular expression pattern.
+                - ignorecase (bool): True if case-insensitive matching is requested.
+            """
             vpat = '''
                 _(?P<options>i?)                    # options
                 (?P<method>text|wildcard|regex)     # method is wildcard or regex
@@ -596,6 +1027,38 @@ class LookupCls:
             return pattern_, ignorecase_
 
         def parse_other_(text_):
+            """
+            Inner helper method of `LookupCls.parse` used to parse custom
+            validation or comparison lookup expressions.
+
+            This function handles lookup expressions that are not based on
+            regex, wildcard, or text patterns. Instead, it supports custom
+            keywords (e.g., "is_empty()") and comparison operators
+            (e.g., "lt(10)", "eq(value)").
+
+            Parameters
+            ----------
+            text_ : str
+                The lookup expression to parse.
+
+            Returns
+            -------
+            callable or str
+                A callable predicate function for custom validations or
+                comparisons, or a regex pattern string if no match is found.
+
+            Notes
+            -----
+            Supported custom validations include:
+            - is_empty(), is_not_empty()
+            - is_ip_address(), is_not_ip_address()
+            - is_ipv4_address(), is_ipv6_address()
+            - is_date(), is_datetime(), is_time()
+            - is_true(), is_false(), etc.
+
+            Supported comparison operators include:
+            - lt(), le(), gt(), ge(), eq(), ne()
+            """
             vpat1_ = '''
                 (?i)(?P<custom_name>
                 is_empty|is_not_empty|
@@ -686,11 +1149,25 @@ class LookupCls:
             raise LookupClsError(fmt.format(text))
 
     def process(self):
-        """Parse a lookup to two expressions: a left expression and
-        a right expression.
+        """
+        Parse the lookup string into left and right expressions.
 
-        If a lookup has a right expression, it will parse and assign to right,
-        else, right expression is None."""
+        This method splits the raw lookup expression into two parts:
+        - **Left expression**: Used to match dictionary keys.
+        - **Right expression**: Used to match dictionary values.
+
+        The left part is always parsed if present. If the lookup string
+        also contains a right-hand expression (after the "=" sign), it
+        is parsed and assigned to `self.right`. If no right-hand part
+        exists, `self.right` remains None.
+
+        Notes
+        -----
+        Examples of lookup parsing:
+        - "abc" → left="abc", right=None
+        - "abc=xyz" → left="abc", right="xyz"
+        - "=regex(.*2021.*)" → left=None, right=regex pattern
+        """
 
         left, *lst = self.lookup.split('=', maxsplit=1)
         left = left.strip()
@@ -700,6 +1177,35 @@ class LookupCls:
             self.right = self.parse(lst[0])
 
     def is_left_matched(self, data):
+        """
+        Determine whether the given input string matches the left-hand lookup expression.
+
+        The left-hand expression is used to match dictionary keys. If defined,
+        this method applies the compiled regex pattern to the provided string.
+        If no left-hand expression exists, the result depends on whether a
+        right-hand expression is defined:
+        - If `self.right` exists, the method returns True (all keys are considered matched).
+        - If neither left nor right is defined, the method returns False.
+
+        Parameters
+        ----------
+        data : str
+            The input string (typically a dictionary key) to test against
+            the left-hand lookup expression.
+
+        Returns
+        -------
+        bool
+            True if the input matches the left-hand expression, or if no
+            left-hand expression exists but a right-hand expression is defined.
+            False otherwise.
+
+        Notes
+        -----
+        - Non-string inputs always return False.
+        - Matching is performed using `re.search` against the parsed left
+          expression if available.
+        """
         if not isinstance(data, str):
             return False
 
@@ -710,6 +1216,40 @@ class LookupCls:
             return True if self.right else False
 
     def is_right_matched(self, data):
+        """
+        Determine whether the given input matches the right-hand lookup expression.
+
+        The right-hand expression is used to match dictionary values. If no
+        right-hand expression is defined, this method returns True (all values
+        are considered matched). If defined, the behavior depends on the type
+        of `self.right`:
+
+        - If `self.right` is a callable, it is invoked with the input `data`
+          and its result is returned.
+        - If `self.right` is a regex pattern string, the input must be a string
+          and is tested against the pattern using `re.search`.
+        - If `data` is not a string when a regex pattern is expected, the method
+          returns False.
+
+        Parameters
+        ----------
+        data : Any
+            The input value to test against the right-hand lookup expression.
+            Must be a string if `self.right` is a regex pattern.
+
+        Returns
+        -------
+        bool
+            True if the input matches the right-hand expression, or if no
+            right-hand expression is defined. False otherwise.
+
+        Notes
+        -----
+        - When `self.right` is callable, any type of input may be supported
+          depending on the predicate function.
+        - When `self.right` is a regex pattern, non-string inputs always
+          return False.
+        """
         if not self.right:
             return True
         else:
@@ -724,16 +1264,22 @@ class LookupCls:
 
 
 class Object:
-    """To build an object.
+    """
+    Utility class for constructing objects with positional and keyword arguments.
+
+    The Object class provides a flexible way to store and manage
+    initialization arguments. It validates that positional arguments
+    meet expected requirements and raises errors when invalid data
+    is provided.
 
     Attributes
     ----------
     args (list): a position arguments.
     kwargs (dict): a keyword arguments.
 
-    Raise
-    -----
-    ObjectArgumentError: if a position argument is not a dictionary object.
+    Raises
+    ------
+    ObjectArgumentError: Raised if any positional argument is not a dictionary instance.
     """
     def __init__(self, *args, **kwargs):
         errors = []
@@ -753,7 +1299,26 @@ class Object:
         self.__dict__.update(kwargs)
 
     def __len__(self):
+        """
+        Return the number of attributes stored in the object.
+
+        Returns
+        -------
+        int
+            The number of attributes currently defined in the object.
+        """
         return len(self.__dict__)
 
     def __bool__(self):
+        """
+        Evaluate the truthiness of the object.
+
+        An `Object` instance is considered truthy if it contains
+        one or more attributes, and falsy if it is empty.
+
+        Returns
+        -------
+        bool
+            True if the object has attributes, False otherwise.
+        """
         return len(self) > 0

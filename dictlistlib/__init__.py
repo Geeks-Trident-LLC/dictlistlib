@@ -1,73 +1,94 @@
-"""Top-level module for dictlistlib.
+"""
+dictlistlib: Top-level package initializer.
 
-This module
+This module provides the primary entry points for working with
+`dictlistlib`. It exposes the `DLQuery` class for querying lists
+of dictionaries, as well as factory functions for creating query
+instances from CSV, JSON, or YAML sources.
 
-- initialize a query instance from DLQuery class
-- or create a query instance from create_from_csv_file,
-  create_from_csv_data, create_from_json_file, create_from_json_data,
-  create_from_yaml_file, or create_from_yaml_data functions.
+Overview
+--------
+- Initialize a query instance directly with the `DLQuery` class.
+- Or create a query instance using one of the factory functions:
+  * `create_from_csv_file`
+  * `create_from_csv_data`
+  * `create_from_json_file`
+  * `create_from_json_data`
+  * `create_from_yaml_file`
+  * `create_from_yaml_data`
 
-A query instance has find method to traverse entire dictionary or list
-to extract a list of records based on a lookup and select-statement.
+Query Mechanics
+---------------
+A query instance provides the `find()` method to traverse dictionaries
+or lists and extract records based on a **lookup expression** and an
+optional **select statement**.
 
-a lookup instance has two parts: left expression and right expression.
-Both of these expressions supports filtering mechanism _text(...), _itext(...),
-_wildcard(...), _iwildcard(...), _regex(...), _iregex(...) where
-i standards for ignorecase.  A right expression supports additional
-validations such as is_empty(), is_not_empty(), is_ipv4_address(), and so on.
+**Lookup Expressions**
+- Consist of a left-hand expression (field) and a right-hand expression (filter).
+- Supported filters:
+  * `_text(...)`, `_itext(...)` — exact text match (case-sensitive / case-insensitive).
+  * `_wildcard(...)`, `_iwildcard(...)` — wildcard pattern matching.
+  * `_regex(...)`, `_iregex(...)` — regular expression matching.
+- The right-hand expression also supports validations such as:
+  * `is_empty()`, `is_not_empty()`
+  * `is_ipv4_address()`, and more.
 
-a select-statement works similar to SQL, but it has minimal
-criteria to filter record.
+**Select Statements**
+- Work similarly to SQL but with minimal syntax.
+- Allow filtering with `WHERE` clauses and projection with `SELECT`.
 
-For example, assuming there is a list of dictionary
+Examples
+--------
+Assume we have a list of dictionaries:
 
 >>> lst_of_dict = [
 ...     {"a": "Apple", "b": "Banana", "c": "Cherry"},
 ...     {"a": "Apricot", "b": "Boysenberry", "c": "Cantaloupe"},
 ...     {"a": "Avocado", "b": "Blueberry", "c": "Clementine"},
 ... ]
->>>
 
-we want to find any fruit beginning with letters Ap in group "a".  First,
-we need to import DLQuery library and instantiate a query_obj
+Initialize a query object:
 
 >>> from dictlistlib import DLQuery
 >>> query_obj = DLQuery(lst_of_dict)
 
-Snippet 1: using a lookup with a wildcard filtering
+**Snippet 1: Lookup with wildcard filtering**
 
 >>> result = query_obj.find(lookup='a=_wildcard(Ap*)', select='')
 >>> assert result == ['Apple', 'Apricot']
 
-Snippet 2: using a lookup with a regex filtering
+**Snippet 2: Lookup with regex filtering**
 
 >>> result = query_obj.find(lookup='a=_regex(Ap\\w+)', select='')
 >>> assert result == ['Apple', 'Apricot']
 
-Snippet 3: using a lookup to get an entry point and select-statement with
-    WHERE clause to filter a result
+**Snippet 3: Lookup with WHERE clause**
 
->>> query_obj.find(lookup='a', select='WHERE a match Ap\\w+')
+>>> result = query_obj.find(lookup='a', select='WHERE a match Ap\\w+')
 >>> assert result == ["Apple", "Apricot"]
 
-In the previous example, we don't select any group.  As a result, the result
-of query is a list of value(s).  If we want to find a filtered record with
-its sibling, we need to select in a select-statement to retrieve more data
-
-Snippet 4: using lookup with wildcard filtering and select-statement to select a, b
+**Snippet 4: Lookup with wildcard + SELECT**
 
 >>> result = query_obj.find(lookup='a=_wildcard(Ap*)', select='SELECT a, b')
->>> assert result == [{'a': 'Apple', 'b': 'Banana'}, {'a': 'Apricot', 'b': 'Boysenberry'}]
+>>> assert result == [{'a': 'Apple', 'b': 'Banana'},
+...                   {'a': 'Apricot', 'b': 'Boysenberry'}]
 
-Snippet 5: using lookup with regex filtering and select-statement to select a, c
+**Snippet 5: Lookup with regex + SELECT**
 
 >>> result = query_obj.find(lookup='a=_regex(Ap\\w+)', select='SELECT a, c')
->>> assert result == [{'a': 'Apple', 'c': 'Cherry'}, {'a': 'Apricot', 'c': 'Cantaloupe'}]
+>>> assert result == [{'a': 'Apple', 'c': 'Cherry'},
+...                   {'a': 'Apricot', 'c': 'Cantaloupe'}]
 
-Snippet 6: using lookup and select-statement to select c with WHERE clause
+**Snippet 6: Lookup with WHERE clause + SELECT**
 
->>> query_obj.find(lookup='a', select='SELECT c WHERE a match Ap\\w+')
+>>> result = query_obj.find(lookup='a', select='SELECT c WHERE a match Ap\\w+')
 >>> assert result == [{'c': 'Cherry'}, {'c': 'Cantaloupe'}]
+
+Notes
+-----
+- If no fields are selected, the result is a list of values.
+- Using `SELECT` allows retrieval of filtered records along with sibling fields.
+- Filtering supports case sensitivity and regex flexibility.
 """
 
 from dictlistlib.dlquery import DLQuery         # noqa

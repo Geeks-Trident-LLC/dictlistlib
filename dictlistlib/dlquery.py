@@ -3,7 +3,6 @@ import re
 import operator
 from dictlistlib import utils
 from dictlistlib.argumenthelper import validate_argument_type
-# from dictlistlib.argumenthelper import validate_argument_is_not_empty
 from dictlistlib.collection import Element
 
 from dictlistlib.parser import SelectParser

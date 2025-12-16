@@ -1,13 +1,17 @@
-"""Module containing the attributes for dictlistlib."""
+"""Module containing metadata and attributes for dictlistlib.
+
+This module defines versioning, edition information, and the `Data` class,
+which centralizes application metadata such as package dependencies,
+company details, repository links, and license information.
+"""
 
 from os import path
-from textwrap import dedent
 
 import compare_versions
 import dateutil
 import yaml
 
-__version__ = '0.4.0'
+__version__ = '0.4.1a1'
 version = __version__
 __edition__ = 'Community'
 edition = __edition__
@@ -20,6 +24,49 @@ __all__ = [
 
 
 class Data:
+    """
+    Centralized metadata container for the dictlistlib application.
+
+    The `Data` class provides static attributes and helper methods
+    that describe the application, its dependencies, company details,
+    and licensing information. It serves as a single source of truth
+    for metadata used throughout the application.
+
+    Attributes
+    ----------
+    main_app_text : str
+        Display text for the main application including version.
+    compare_versions_text : str
+        Version string for the `compare_versions` dependency.
+    compare_versions_link : str
+        PyPI link for the `compare_versions` package.
+    python_dateutil_text : str
+        Version string for the `python-dateutil` dependency.
+    python_dateutil_link : str
+        PyPI link for the `python-dateutil` package.
+    pyyaml_text : str
+        Version string for the `PyYAML` dependency.
+    pyyaml_link : str
+        PyPI link for the `PyYAML` package.
+    company : str
+        Name of the company maintaining dictlistlib.
+    company_url : str
+        Official company website.
+    repo_url : str
+        GitHub repository URL for dictlistlib.
+    documentation_url : str
+        Link to the README file in the repository.
+    license_url : str
+        Link to the LICENSE file in the repository.
+    years : str
+        License validity years.
+    license_name : str
+        Name of the license (BSD-3-Clause).
+    copyright_text : str
+        Copyright notice text.
+    license : str
+        Full license text loaded from the LICENSE file.
+    """
     # main app
     main_app_text = 'dictlistlib {}'.format(version)
 
@@ -43,45 +90,28 @@ class Data:
     license_url = path.join(repo_url, 'blob/develop/LICENSE')
 
     # License
-    years = '2022-2080'
+    years = '2022-2040'
     license_name = 'BSD-3-Clause License'
     copyright_text = 'Copyright @ {}'.format(years)
-    license = dedent(
-        """
-BSD 3-Clause License
-
-Copyright (c) 2021-2040, Geeks Trident LLC
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-1. Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer.
-
-2. Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
-
-3. Neither the name of the copyright holder nor the names of its
-   contributors may be used to endorse or promote products derived from
-   this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-        """
-    ).strip()
+    with open("LICENSE", encoding="utf-8") as f:
+        license = f.read()
 
     @classmethod
     def get_dependency(cls):
+        """
+        Retrieve metadata for external package dependencies.
+
+        This method returns a dictionary containing version strings
+        and PyPI links for the key dependencies used by dictlistlib.
+
+        Returns
+        -------
+        dict
+            A dictionary with dependency names as keys and metadata
+            dictionaries as values. Each metadata dictionary contains:
+            - 'package': str, version string of the dependency.
+            - 'url': str, PyPI link for the dependency.
+        """
         dependencies = dict(
             compare_versions=dict(
                 package=cls.compare_versions_text,
