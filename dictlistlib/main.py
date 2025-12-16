@@ -37,6 +37,8 @@ from dictlistlib.utils import print_data_as_tabular
 
 import dictlistlib.tutorial as tu
 
+from dictlistlib.constant import ECODE
+
 
 def run_tutorial(options):
     """
@@ -51,7 +53,7 @@ def run_tutorial(options):
     -------
     None
         Executes the requested tutorial and terminates the process
-        with ``sys.exit(0)``.
+        with ``sys.exit(ECODE.SUCCESS)``.
     """
     tutorial = options.tutorial.lower()
 
@@ -62,7 +64,7 @@ def run_tutorial(options):
     tutorial == 'csv' and tu.show_tutorial_csv()
     tutorial == 'json' and tu.show_tutorial_json()
     tutorial == 'yaml' and tu.show_tutorial_yaml()
-    sys.exit(0)
+    sys.exit(ECODE.SUCCESS)
 
 
 def run_gui_application(options):
@@ -78,12 +80,12 @@ def run_gui_application(options):
     -------
     None
         Runs the GUI application and terminates the process
-        with ``sys.exit(0)`` if `--gui` is specified.
+        with ``sys.exit(ECODE.SUCCESS)`` if `--gui` is specified.
     """
     if options.gui:
         app = Application()
         app.run()
-        sys.exit(0)
+        sys.exit(ECODE.SUCCESS)
 
 
 def show_dependency(options):
@@ -99,7 +101,7 @@ def show_dependency(options):
     -------
     None
         Prints dependency information and terminates the process
-        with ``sys.exit(0)`` if `--dependency` is specified.
+        with ``sys.exit(ECODE.SUCCESS)`` if `--dependency` is specified.
     """
     if options.dependency:
         from platform import uname, python_version
@@ -119,7 +121,7 @@ def show_dependency(options):
             lst.append('             {0[url]}'.format(pkg))
 
         Printer.print(lst)
-        sys.exit(0)
+        sys.exit(ECODE.SUCCESS)
 
 
 def show_version(options):
@@ -140,12 +142,12 @@ def show_version(options):
     -------
     None
         Prints the application version and terminates the process
-        with ``sys.exit(0)`` if `--version` is specified.
+        with ``sys.exit(ECODE.SUCCESS)`` if `--version` is specified.
     """
     if options.version:
         from dictlistlib import version
         print(f'dictlistlib {version}')
-        sys.exit(0)
+        sys.exit(ECODE.SUCCESS)
 
 
 class Cli:
@@ -363,7 +365,7 @@ class Cli:
         -------
         None
             Executes the query, prints results, and terminates
-            with ``sys.exit(0)``.
+            with ``sys.exit(ECODE.SUCCESS)``.
         """
         lookup, select = options.lookup, options.select_statement
         if not options.lookup:
@@ -387,7 +389,7 @@ class Cli:
         else:
             print('*** No record is found.')
 
-        sys.exit(0)
+        sys.exit(ECODE.SUCCESS)
 
     def run(self):
         """
